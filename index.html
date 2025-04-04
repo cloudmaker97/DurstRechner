@@ -1,86 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2196f3" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="theme-color" content="#2196f3"/>
     <link rel="manifest" href="manifest.json">
-    <title>Produkt-Rechner</title>
-    <style>
-        body { font-family: sans-serif; margin: 2rem; }
-        .product { margin: 0.5rem 0; }
-        .product button { padding: 0.5rem 1rem; font-size: 1rem; }
-        #result { margin-top: 2rem; font-size: 1.5rem; }
-        .actions button { margin-right: 1rem; }
-    </style>
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>Der Durstrechner</title>
 </head>
 <body>
-<h1>Produkt-Rechner</h1>
-<div id="products"></div>
-<div id="result">Zwischensumme: €<span id="sum">0.00</span></div>
-<div class="actions">
-    <button onclick="undo()">Rückgängig</button>
-    <button onclick="resetCalc()">Reset</button>
-</div>
+    <header>
+        <h1><span class="emoji"></span> Der Durstrechner</h1>
+        <button>Einstellungen</button>
+    </header>
+    <div class="slot">
+        <aside class="calculator">
+            <div>
 
-<script>
-    const defaultProducts = [
-        { name: "Käse", value: 2.5 },
-        { name: "Apfel", value: 1.0 },
-        { name: "Milch", value: 1.8 }
-    ];
+            </div>
+        </aside>
+        <main class="controls">
+            <div>
 
-    const savedProducts = JSON.parse(localStorage.getItem("products")) || defaultProducts;
-    const productContainer = document.getElementById("products");
-    const sumDisplay = document.getElementById("sum");
+            </div>
+        </main>
+    </div>
 
-    let history = [];
-
-    let total = 0;
-
-    function renderProducts() {
-        productContainer.innerHTML = "";
-        savedProducts.forEach((product, index) => {
-            const div = document.createElement("div");
-            div.className = "product";
-            div.innerHTML = `<button onclick="add(${product.value})">${product.name} (€${product.value.toFixed(2)})</button>`;
-            productContainer.appendChild(div);
-        });
-    }
-
-    function add(value) {
-        total += value;
-        history.push(value);
-        updateSum();
-    }
-
-    function undo() {
-        if (history.length > 0) {
-            total -= history.pop();
-            updateSum();
+    <script>
+        // Install the service worker for offline capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('Service Worker registered', reg))
+                    .catch(err => console.error('SW registration failed', err));
+            });
         }
-    }
-
-    function resetCalc() {
-        total = 0;
-        history = [];
-        updateSum();
-    }
-
-    function updateSum() {
-        sumDisplay.textContent = total.toFixed(2);
-    }
-
-    renderProducts();
-</script>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('Service Worker registered', reg))
-                .catch(err => console.error('SW registration failed', err));
-        });
-    }
-</script>
+    </script>
 </body>
 </html>
