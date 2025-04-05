@@ -8,11 +8,18 @@
     --box-padding: 1em;
     --currency-symbol: " €";
     --amount-times-symbol: "x ";
-    --product-meta-separator: " — ";
+    --product-button-background-color: #f0f0f0;
+    --product-button-hover-background-color: #e0e0e0;
+    --product-button-color: #000;
+    --product-button-border-color: #000;
+    --product-button-border-radius: 5px;
 }
+
 html, body {
     height: 100%;
+    width: 100vw;
 }
+
 body {
     display: flex;
     flex-direction: column;
@@ -20,143 +27,182 @@ body {
     margin: 0;
     padding: 0;
 }
+
 header {
     display: flex;
     background-color: var(--header-background-color);
     color: var(--header-text-color);
     padding: .5em;
+
+    h1 {
+        margin: 0;
+        padding: 0;
+        transform: translateY(-.1em);
+        user-select: none;
+        font-size: 1.1em;
+
+        > span.emoji {
+            padding-right: .4em;
+
+            &:before {
+                content: "🍺";
+            }
+        }
+    }
+
+    button {
+        margin-left: auto;
+        background-color: var(--header-button-background-color);
+        color: var(--header-button-color);
+    }
 }
-header h1 {
-    margin: 0;
-    padding: 0;
-    transform: translateY(-.1em);
-    user-select: none;
-    font-size: 1.1em;
-}
-header button {
-    margin-left: auto;
-    background-color: var(--header-button-background-color);
-    color: var(--header-button-color);
-}
-header h1 > span.emoji {
-    padding-right: .4em;
-}
-header h1 > span.emoji:before {
-    content: "🍺";
-}
+
 .slot {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
 }
+
 aside.calculator {
     display: flex;
     flex: 1 0 0;
     background-color: var(--aside-background-color);
     height: 100%;
+    min-width: 300px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
-}
-aside.calculator .line-items {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 0;
-    box-sizing: border-box;
-}
-aside.calculator .line-summary {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 0;
-    box-sizing: border-box;
-}
-aside.calculator .calculator-action {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-aside.calculator .calculator-action button {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    border: 1px solid black;
-    padding: .5em;
-    font-size: 1.2em;
-}
-aside.calculator > div,
-main.controls > div {
-    padding: var(--box-padding);
-    box-sizing: border-box;
-    width: 100%;
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        padding: var(--box-padding);
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .line-items {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 0;
+        box-sizing: border-box;
+        gap: .3em;
+        overflow-y: auto;
+
+        .item {
+            display: flex;
+            font-size: 1.3em;
+
+            .value {
+                margin-right: .2em;
+                &::after {
+                    content: var(--currency-symbol);
+                }
+            }
+
+            .amount {
+                margin-right: .4em;
+                &::after {
+                    content: var(--amount-times-symbol);
+                }
+            }
+
+            > .remove {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 1.5em;
+                height: 1.5em;
+                margin-left: auto;
+                padding: .8em;
+            }
+        }
+    }
+
+    .line-summary {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 0;
+        box-sizing: border-box;
+    }
+
+    .calculator-summary {
+        > .value {
+            display: flex;
+            font-size: 1.8em;
+            justify-content: center;
+            margin-bottom: .2em;
+
+            &::after {
+                content: var(--currency-symbol);
+                padding-left: .2em;
+            }
+        }
+    }
+
+    .calculator-action {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        button {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            border: 1px solid black;
+            padding: .5em;
+            font-size: 1.2em;
+        }
+    }
 }
 
-aside.calculator > div {
-    display: flex;
-    flex-direction: column;
-}
-aside.calculator .line-items {
-    gap: .3em;
-    overflow-y: auto;
-}
-aside.calculator .line-items .item {
-    font-size: 1.3em;
-}
-aside.calculator .line-items .item > .value::after {
-    content: var(--currency-symbol);
-}
-aside.calculator .line-items .item > .amount::after {
-    content: var(--amount-times-symbol);
-}
-aside.calculator .calculator-summary > .value {
-    display: flex;
-    font-size: 1.8em;
-    justify-content: center;
-    margin-bottom: .2em;
-}
-aside.calculator .calculator-summary > .value::after {
-    content: var(--currency-symbol);
-    padding-left: .2em;
-}
 main.controls {
     display: flex;
     flex: 4 0 0;
-}
-main.controls > div {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
-}
-main.controls > div > .tab {
-    display: none;
-}
-main.controls > div > .tab.active {
-    display: block;
-}
-main.controls > div > .tab.tab-controls .product-grid {
-    display: grid;
-    /* 3 per row*/
-    grid-template-columns: repeat(4, 1fr);
-    gap: .5em;
-    overflow-y: auto;
-    padding: var(--box-padding);
-}
-main.controls > div > .tab.tab-controls .product-grid .product {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1em;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-main.controls > div > .tab.tab-controls .product-grid .product > .product-meta {
-    display: flex;
-    margin-top: .5em;
-}
 
-main.controls > div > .tab.tab-controls .product-grid .product .product-meta > *:not(:last-child)::after {
-    content: var(--product-meta-separator);
-    padding-right: .5em;
-}
-main.controls > div > .tab.tab-controls .product-grid .product .product-meta > .value::after {
-    content: var(--currency-symbol);
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        padding: var(--box-padding);
+        box-sizing: border-box;
+        width: 100%;
+
+        > .tab {
+            display: none;
+
+            &.active {
+                display: block;
+            }
+
+            &.tab-controls {
+                .product-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: .5em;
+                    overflow-y: auto;
+                    padding: var(--box-padding);
+
+                    button.product {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: start;
+                        align-items: center;
+                        padding: 1em;
+                        border: 1px solid var(--product-button-border-color);
+                        border-radius: var(--product-button-border-radius);
+                        background-color: var(--product-button-background-color);
+                        color: var(--product-button-color);
+                        &:hover, &:focus-visible {
+                            background-color: var(--product-button-hover-background-color);
+                        }
+
+                        > .product-meta {
+                            display: flex;
+                            margin-top: .5em;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
