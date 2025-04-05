@@ -3,7 +3,7 @@ const CACHE_NAME = 'durst-rechner-v2';
 const BASE_PATH = self.location.pathname.includes('DurstRechner') ? '/DurstRechner' : ''; // Handle GitHub Pages vs. Localhost
 
 const FILES_TO_CACHE = [
-    '/',
+    `${BASE_PATH}/`,
     `${BASE_PATH}/index.html`,
     `${BASE_PATH}/assets/manifest.json`,
     `${BASE_PATH}/assets/script/service-worker.js`,
