@@ -6,6 +6,13 @@ ist auch offline verfügbar und kann ohne Internetverbindung genutzt werden (Ser
 Einrichtung wird eine Internetverbindung empfohlen (das einmalige Aufrufen der Seite im Browser mit einer Internetverbindung 
 genügt).
 
+## Installation
+
+```bash
+# Installieren der Abhängigkeiten
+pnpm install
+```
+
 ## Entwicklung
 
 ```bash

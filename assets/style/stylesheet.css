@@ -8,6 +8,9 @@
         min-width: 3em;
     }
 }
+.product-list {
+    padding-bottom: 1em;
+}
 .currency-value::after {
     content: ' €';
 }

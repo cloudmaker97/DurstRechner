@@ -48,15 +48,10 @@ class CartLine {
 class ProductList {
     constructor() {
         this.products = [];
-        this.products.push(new Product('Product 1', 10, 'https://placehold.co/250x250/000000/FFF?text=Product 1'));
-        this.products.push(new Product('Product 2', 5, 'https://placehold.co/250x250/000000/FFF?text=Product 2'));
-        this.products.push(new Product('Product 3', 2.5, 'https://placehold.co/250x250/000000/FFF?text=Product 3'));
-        this.products.push(new Product('Product 4', 1, 'https://placehold.co/250x250/000000/FFF?text=Product 4'));
+        for (let i = 1; i < 50; i++) {
+            this.products.push(new Product(`Product ${i}`, 1, `https://placehold.co/250x250?text=Product ${i}`));
+        }
         this.renderProductList();
-    }
-
-    getProductJson() {
-        return JSON.stringify(this.products);
     }
 
     getProductListElement() {
