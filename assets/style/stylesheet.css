@@ -24,7 +24,7 @@
 [data-template] {
     display: none !important;
 }
-.cart-items, .product-list, .alert, .navbar-brand {
+.cart-items, .product-list, .alert, .navbar-brand, .settings-product-list {
     user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;
@@ -34,6 +34,6 @@ img {
     -webkit-user-select: none;
     -webkit-user-drag: none;
 }
-.product-box, .cart-items {
+.product-box, .cart-items, .settings-product-list {
     cursor: pointer;
 }

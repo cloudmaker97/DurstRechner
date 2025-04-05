@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/style/stylesheet.css">
-    <title>Der Durstrechner</title>
+    <title>Durstrechner</title>
 </head>
 <body class="d-flex flex-column vh-100">
     <nav class="navbar navbar-expand-lg border-bottom mb-3">
@@ -58,25 +58,22 @@
         <div data-tab="settings" class="row d-none">
             <div class="row">
                 <div class="col">
-                    <form class="card mb-3" method="dialog">
+                    <form class="card mb-3" method="dialog" id="new-product">
                         <h5 class="card-header">Neues Produkt</h5>
                         <div class="card-body">
-                            <div class="form-floating mb-2">
+                            <div class="mb-2">
+                                <label for="product-name" class="form-label">Name des Produkts</label>
                                 <input type="text" class="form-control" placeholder="Tolles Produkt" id="product-name" required>
-                                <label for="product-name">Name des Produkts</label>
-                            </div>
-                            <div class="input-group mb-2">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" step="0.01" value="0" id="product-price" required>
-                                    <label for="product-price">Preis</label>
-                                </div>
-                                <span class="input-group-text">€</span>
                             </div>
                             <div class="mb-2">
-                                <label for="product-image">Bild auswählen</label>
+                                <label for="product-price" class="form-label">Preis</label>
+                                <input type="number" class="form-control" step="0.01" value="0.00" id="product-price" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="product-image" class="form-label">Bild auswählen</label>
                                 <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
                             </div>
-                            <input type="submit" class="btn btn-success" value="Speichern">
+                            <input type="submit" class="btn btn-success" value="Speichern" id="create-product">
                         </div>
                     </form>
 
@@ -92,9 +89,11 @@
                 </div>
                 <div class="col">
                     <div class="card">
-                        <h5 class="card-header">Produkte</h5>
+                        <h5 class="card-header">Produkte entfernen</h5>
                         <div class="card-body">
-                            asd
+                            <li class="list-group-item" data-template="settings-product">Test</li>
+                            <ul class="list-group settings-product-list">
+                            </ul>
                         </div>
                     </div>
                 </div>

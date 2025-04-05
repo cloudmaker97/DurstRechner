@@ -8,6 +8,11 @@ class TemplateElement {
         return this.removeTemplate(element);
     }
 
+    static getSettingsProductTemplate() {
+        const element = document.querySelector('[data-template=settings-product]').cloneNode(true);
+        return this.removeTemplate(element);
+    }
+
     static removeTemplate(element) {
         element.removeAttribute('data-template');
         return element;
@@ -36,6 +41,17 @@ class Product {
         })
         return productElement;
     }
+    getSettingsProductElement() {
+        const productElement = TemplateElement.getSettingsProductTemplate();
+        productElement.setAttribute('data-id', this.id);
+        productElement.textContent = this.name;
+        productElement.addEventListener('click', () => {
+            productList.removeProduct(this);
+            productList.setExportField();
+            productElement.remove();
+        })
+        return productElement;
+    }
 }
 
 class CartLine {
@@ -47,8 +63,8 @@ class CartLine {
 
 class ProductList {
     constructor() {
-        this.fromJson(this.getProductJson())
-        this.getImportExportTextarea().textContent = this.getProductJson();
+        this.loadFromJson(localStorage.getItem('products') ?? [])
+        this.setExportField();
         this.getImportExportTextarea().addEventListener('input', (e) => {
             try {
                 const json = e.target.value;
@@ -60,18 +76,11 @@ class ProductList {
         });
     }
 
-    getProductJson() {
-        try {
-            let newVar = localStorage.getItem('products') ?? [];
-            JSON.parse(newVar)
-            return newVar;
-        } catch (e) {
-            console.error(e);
-        }
-        return [];
+    setExportField() {
+        this.getImportExportTextarea().textContent = JSON.stringify(this.products);
     }
 
-    fromJson(json) {
+    loadFromJson(json) {
         let parse = [];
         try {
             parse = JSON.parse(json);
@@ -88,10 +97,39 @@ class ProductList {
         return document.querySelector('.product-list');
     }
 
+    getSettingListElement() {
+        return document.querySelector('.settings-product-list');
+    }
+
     renderProductList() {
+        // Clear the product list element before rendering except the template
+        this.getProductListElement().querySelectorAll('[data-id]').forEach(e => {
+            if (e.getAttribute('data-template') === null) {
+                e.remove();
+            }
+        });
         this.products.forEach(e => {
             this.getProductListElement().appendChild(e.getProductElement());
+            this.getSettingListElement().appendChild(e.getSettingsProductElement());
         })
+    }
+
+    addProduct(product) {
+        this.products.push(product);
+        localStorage.setItem('products', JSON.stringify(this.products));
+        this.getProductListElement().appendChild(product.getProductElement());
+        this.getSettingListElement().appendChild(product.getSettingsProductElement());
+        this.setExportField();
+    }
+
+    removeProduct(product) {
+        this.products = this.products.filter(e => e.id !== product.id);
+        const productElement = this.getProductListElement().querySelector(`[data-id="${product.id}"]`);
+        if (productElement) {
+            productElement.remove();
+        }
+        localStorage.setItem('products', JSON.stringify(this.products));
+        this.setExportField();
     }
 }
 
@@ -207,8 +245,39 @@ class Tab {
 
 let isSettingsTab = false;
 const cart = new Cart();
-new ProductList();
+const productList = new ProductList();
 
 document.querySelector('[data-toggle-tab]').addEventListener('click', (e) => {
     Tab.toggleTab();
+});
+
+document.querySelector('#create-product').addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent form submission (if any)
+
+    const name = document.querySelector('#product-name').value;
+    let fieldPrice = document.querySelector('#product-price').value;
+    const image = document.querySelector('#product-image').files[0];
+
+    if(name.length === 0) {
+        alert('Name muss ausgefüllt sein');
+        return;
+    }
+
+    if (image) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            const imageBase64 = reader.result;
+            const imageSrcWithBase64 = `data:${image.type};base64,${imageBase64.split(',')[1]}`;
+            productList.addProduct(new Product(name, fieldPrice, imageSrcWithBase64));
+            document.querySelector('#product-name').value = '';
+            document.querySelector('#product-price').value = '0,00';
+            document.querySelector('#product-image').value = '';
+        };
+        reader.readAsDataURL(image);
+    } else {
+        productList.addProduct(new Product(name, fieldPrice, `https://placehold.co/250x250?text={${name}}`));
+        document.querySelector('#product-name').value = '';
+        document.querySelector('#product-price').value = '';
+        document.querySelector('#product-image').value = '';
+    }
 });
