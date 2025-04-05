@@ -24,7 +24,7 @@ const FILES_TO_CACHE = [
 
 
 const FILES_TO_CACHE_PREFIXED = FILES_TO_CACHE.map(e => {
-    let origin = self.location.origin;
+    let origin = self.location.href.replace('index.html', '');
     return origin + e;
 })
 
