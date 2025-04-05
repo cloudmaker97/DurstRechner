@@ -5,6 +5,12 @@ const FILES_TO_CACHE = [
     '/manifest.json',
     '/service-worker.js',
     '/stylesheet.css',
+    '/favicon/android-chrome-192x192.png',
+    '/favicon/android-chrome-512x512.png',
+    '/favicon/apple-touch-icon.png',
+    '/favicon/favicon-16x16.png',
+    '/favicon/favicon-32x32.png',
+    '/favicon/favicon.ico',
 ];
 
 self.addEventListener('install', event => {
