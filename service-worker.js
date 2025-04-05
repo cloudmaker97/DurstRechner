@@ -1,4 +1,5 @@
-const CACHE_NAME = 'produkt-rechner-v1';
+const CACHE_NAME = 'durst-rechner-v1';
+
 const FILES_TO_CACHE = [
     '/',
     '/index.html',

@@ -6,6 +6,9 @@
     --aside-background-color: #dfdfdf;
     --aside-text-color: #000;
     --box-padding: 1em;
+    --currency-symbol: " €";
+    --amount-times-symbol: "x ";
+    --product-meta-separator: " — ";
 }
 html, body {
     height: 100%;
@@ -54,12 +57,106 @@ aside.calculator {
     height: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 }
-main.controls {
+aside.calculator .line-items {
     display: flex;
-    flex: 4 0 0;
+    flex-direction: column;
+    flex: 1 0 0;
+    box-sizing: border-box;
+}
+aside.calculator .line-summary {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+    box-sizing: border-box;
+}
+aside.calculator .calculator-action {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+aside.calculator .calculator-action button {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    border: 1px solid black;
+    padding: .5em;
+    font-size: 1.2em;
 }
 aside.calculator > div,
 main.controls > div {
     padding: var(--box-padding);
     box-sizing: border-box;
+    width: 100%;
+}
+
+aside.calculator > div {
+    display: flex;
+    flex-direction: column;
+}
+aside.calculator .line-items {
+    gap: .3em;
+    overflow-y: auto;
+}
+aside.calculator .line-items .item {
+    font-size: 1.3em;
+}
+aside.calculator .line-items .item > .value::after {
+    content: var(--currency-symbol);
+}
+aside.calculator .line-items .item > .amount::after {
+    content: var(--amount-times-symbol);
+}
+aside.calculator .calculator-summary > .value {
+    display: flex;
+    font-size: 1.8em;
+    justify-content: center;
+    margin-bottom: .2em;
+}
+aside.calculator .calculator-summary > .value::after {
+    content: var(--currency-symbol);
+    padding-left: .2em;
+}
+main.controls {
+    display: flex;
+    flex: 4 0 0;
+}
+main.controls > div {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+main.controls > div > .tab {
+    display: none;
+}
+main.controls > div > .tab.active {
+    display: block;
+}
+main.controls > div > .tab.tab-controls .product-grid {
+    display: grid;
+    /* 3 per row*/
+    grid-template-columns: repeat(4, 1fr);
+    gap: .5em;
+    overflow-y: auto;
+    padding: var(--box-padding);
+}
+main.controls > div > .tab.tab-controls .product-grid .product {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+main.controls > div > .tab.tab-controls .product-grid .product > .product-meta {
+    display: flex;
+    margin-top: .5em;
+}
+
+main.controls > div > .tab.tab-controls .product-grid .product .product-meta > *:not(:last-child)::after {
+    content: var(--product-meta-separator);
+    padding-right: .5em;
+}
+main.controls > div > .tab.tab-controls .product-grid .product .product-meta > .value::after {
+    content: var(--currency-symbol);
 }
