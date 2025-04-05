@@ -1,7 +1,6 @@
 const CACHE_NAME = 'durst-rechner-v2';
 
 const FILES_TO_CACHE = [
-    '/',
     '/index.html',
     '/assets/manifest.json',
     '/assets/script/service-worker.js',
