@@ -1,3 +1,36 @@
+.line-item-details {
+    .amount {
+        display: inline-block;
+        min-width: 1.5em;
+    }
+    .price {
+        display: inline-block;
+        min-width: 3em;
+    }
+}
 .currency-value::after {
     content: ' €';
+}
+.quantity-value::after {
+    content: 'x ';
+}
+.name-value {
+    margin-left: 1em;
+    font-weight: bold;
+}
+[data-template] {
+    display: none !important;
+}
+.cart-items, .product-list, .alert, .navbar-brand {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+img {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+.product-box, .cart-items {
+    cursor: pointer;
 }

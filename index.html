@@ -5,51 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="theme-color" content="#2196f3"/>
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="stylesheet.css">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="stylesheet.css">
     <title>Der Durstrechner</title>
 </head>
 <body class="d-flex flex-column vh-100">
     <nav class="navbar navbar-expand-lg border-bottom mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Durstrechner</a>
-            <form class="d-flex" role="search">
+            <a class="navbar-brand" href="#">Der Durstrechner</a>
+            <form class="d-flex" role="search" method="dialog">
                 <button class="btn" data-toggle-bs-theme><i class="bi bi-lightbulb-fill"></i> Tag / Nacht</button>
-                <button class="btn">Einstellungen</button>
+                <button class="btn"><i class="bi bi-gear"></i> Einstellungen</button>
             </form>
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <main class="container-fluid">
         <div class="row">
-            <div class="col-3">
-                <ul class="list-group d-none">
-                    <li class="list-group-item">Test</li>
-                </ul>
-                <div class="alert alert-info">Keine Produkte ausgewählt</div>
+            <div class="col-12 col-md-4">
+                <li class="list-group-item d-flex justify-content-between" data-template="product-line-item">
+                        <span class="line-item-details">
+                            <span class="amount quantity-value" data-attr="quantity">5</span>
+                            <span class="price currency-value" data-attr="value">2,50</span>
+                            <span class="name name-value" data-attr="name">Wasser mit Kohlensäure</span>
+                        </span>
+                    <i class="bi bi-dash-circle"></i>
+                </li>
+                <ul class="list-group cart-items"></ul>
+                <div class="alert alert-info cart-empty">Keine Produkte ausgewählt</div>
                 <hr>
-                <button class="btn btn-secondary btn-lg w-100">
+                <button class="btn btn-secondary btn-lg w-100 cart-value mb-3">
                     <span class="currency-value" data-total-value>0,00</span>
                 </button>
             </div>
-            <div class="col-9">
-                <div class="row row-cols-6 row-gap-3">
-                    <div class="col product-box">
+            <div class="col-12 col-md-8">
+                <div class="row row-cols-4 row-gap-3 product-list">
+                    <div class="col product-box" data-template="product" data-id="0">
                         <div class="card">
-                            <img src="https://placehold.co/250x250" alt="Produktbild" class="card-img-top">
+                            <img data-attr="image" src="https://placehold.co/250x250" alt="Produktbild" class="card-img-top">
                             <div class="card-body">
-                                <span>Wasser mit Kohlensäure</span>
+                                <span data-attr="name">Wasser mit Kohlensäure</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
 
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
