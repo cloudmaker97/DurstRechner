@@ -24,10 +24,24 @@ const FILES_TO_CACHE = [
     `${BASE_PATH}/assets/favicon/favicon.ico`,
 ];
 
+// Cache files with the correct base path
+const FILES_TO_CACHE_PREFIXED = FILES_TO_CACHE;
+
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(FILES_TO_CACHE);
+            const cachePromises = FILES_TO_CACHE_PREFIXED.map(url => {
+                return fetch(url).then(response => {
+                    if (response.ok) {
+                        return cache.put(url, response);
+                    } else {
+                        console.error(`Failed to fetch: ${url}`);
+                    }
+                }).catch(err => {
+                    console.error(`Failed to fetch (network error): ${url}`, err);
+                });
+            });
+            return Promise.all(cachePromises);
         })
     );
 });
