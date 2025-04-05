@@ -19,13 +19,13 @@
             <a class="navbar-brand" href="#">Der Durstrechner</a>
             <form class="d-flex" role="search" method="dialog">
                 <button class="btn" data-toggle-bs-theme><i class="bi bi-lightbulb-fill"></i> Tag / Nacht</button>
-                <button class="btn"><i class="bi bi-gear"></i> Einstellungen</button>
+                <button class="btn" data-toggle-tab><i class="bi bi-gear"></i> Einstellungen</button>
             </form>
         </div>
     </nav>
 
     <main class="container-fluid flex-grow-1">
-        <div class="row">
+        <div data-tab="products" class="row">
             <div class="col-12 col-md-4">
                 <li class="list-group-item d-flex justify-content-between" data-template="product-line-item">
                         <span class="line-item-details">
@@ -50,6 +50,51 @@
                             <div class="card-body">
                                 <span data-attr="name">Wasser mit Kohlensäure</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-tab="settings" class="row d-none">
+            <div class="row">
+                <div class="col">
+                    <form class="card mb-3" method="dialog">
+                        <h5 class="card-header">Neues Produkt</h5>
+                        <div class="card-body">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" placeholder="Tolles Produkt" id="product-name" required>
+                                <label for="product-name">Name des Produkts</label>
+                            </div>
+                            <div class="input-group mb-2">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" step="0.01" value="0" id="product-price" required>
+                                    <label for="product-price">Preis</label>
+                                </div>
+                                <span class="input-group-text">€</span>
+                            </div>
+                            <div class="mb-2">
+                                <label for="product-image">Bild auswählen</label>
+                                <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
+                            </div>
+                            <input type="submit" class="btn btn-success" value="Speichern">
+                        </div>
+                    </form>
+
+                    <div class="card">
+                        <h5 class="card-header">Export / Import</h5>
+                        <div class="card-body">
+                            <label class="w-100">
+                                Daten importieren oder exportieren (Kopieren und Einfügen)
+                                <textarea class="form-control mt-1" id="input-export-import"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Produkte</h5>
+                        <div class="card-body">
+                            asd
                         </div>
                     </div>
                 </div>

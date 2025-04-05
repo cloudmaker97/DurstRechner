@@ -47,11 +47,41 @@ class CartLine {
 
 class ProductList {
     constructor() {
-        this.products = [];
-        for (let i = 1; i < 50; i++) {
-            this.products.push(new Product(`Product ${i}`, 1, `https://placehold.co/250x250?text=Product ${i}`));
+        this.fromJson(this.getProductJson())
+        this.getImportExportTextarea().textContent = this.getProductJson();
+        this.getImportExportTextarea().addEventListener('input', (e) => {
+            try {
+                const json = e.target.value;
+                localStorage.setItem('products', json);
+                window.location = window.location;
+            } catch (e) {
+                console.error(e);
+            }
+        });
+    }
+
+    getProductJson() {
+        try {
+            let newVar = localStorage.getItem('products') ?? [];
+            JSON.parse(newVar)
+            return newVar;
+        } catch (e) {
+            console.error(e);
         }
+        return [];
+    }
+
+    fromJson(json) {
+        let parse = [];
+        try {
+            parse = JSON.parse(json);
+        } catch (e) {}
+        this.products = parse.map(e => new Product(e.name, e.price, e.image));
         this.renderProductList();
+    }
+
+    getImportExportTextarea() {
+        return document.querySelector('#input-export-import');
     }
 
     getProductListElement() {
@@ -156,5 +186,29 @@ class Cart {
     }
 }
 
+class Tab {
+    static toggleTab() {
+        if(!isSettingsTab) {
+            this.switchTab('settings');
+        } else {
+            this.switchTab('products');
+        }
+        isSettingsTab = !isSettingsTab;
+    }
+    static switchTab(tab) {
+        const tabs = document.querySelectorAll('[data-tab]');
+        tabs.forEach(e => {
+            e.classList.add('d-none');
+        });
+        const activeTab = document.querySelector(`[data-tab=${tab}]`);
+        activeTab.classList.remove('d-none');
+    }
+}
+
+let isSettingsTab = false;
 const cart = new Cart();
-const productList = new ProductList();
+new ProductList();
+
+document.querySelector('[data-toggle-tab]').addEventListener('click', (e) => {
+    Tab.toggleTab();
+});
