@@ -1,4 +1,4 @@
-const CACHE_NAME = 'durst-rechner-v1';
+const CACHE_NAME = 'durst-rechner-v2';
 
 const FILES_TO_CACHE = [
     '/',
@@ -6,6 +6,14 @@ const FILES_TO_CACHE = [
     '/manifest.json',
     '/service-worker.js',
     '/stylesheet.css',
+    '/script/all.js',
+    '/script/calculator.js',
+    '/script/theme.js',
+    '/node_modules/bootstrap/dist/css/bootstrap.min.css',
+    '/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+    '/node_modules/bootstrap-icons/font/bootstrap-icons.min.css',
+    '/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2',
+    '/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff',
     '/favicon/android-chrome-192x192.png',
     '/favicon/android-chrome-512x512.png',
     '/favicon/apple-touch-icon.png',

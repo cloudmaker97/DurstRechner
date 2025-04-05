@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,69 +9,51 @@
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
     <title>Der Durstrechner</title>
 </head>
-<body>
-    <header>
-        <h1><span class="emoji"></span> Der Durstrechner</h1>
-        <button>Einstellungen</button>
-    </header>
-    <div class="slot">
-        <aside class="calculator">
-            <div>
-                <div class="line-items">
-                    <div class="item">
-                        <span class="amount">1</span>
-                        <span class="value">5,50</span>
-                        <span class="name">Longdrink</span>
-                        <button class="remove">X</button>
+<body class="d-flex flex-column vh-100">
+    <nav class="navbar navbar-expand-lg border-bottom mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Durstrechner</a>
+            <form class="d-flex" role="search">
+                <button class="btn" data-toggle-bs-theme><i class="bi bi-lightbulb-fill"></i> Tag / Nacht</button>
+                <button class="btn">Einstellungen</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <ul class="list-group d-none">
+                    <li class="list-group-item">Test</li>
+                </ul>
+                <div class="alert alert-info">Keine Produkte ausgewählt</div>
+                <hr>
+                <button class="btn btn-secondary btn-lg w-100">
+                    <span class="currency-value" data-total-value>0,00</span>
+                </button>
+            </div>
+            <div class="col-9">
+                <div class="row row-cols-6 row-gap-3">
+                    <div class="col product-box">
+                        <div class="card">
+                            <img src="https://placehold.co/250x250" alt="Produktbild" class="card-img-top">
+                            <div class="card-body">
+                                <span>Wasser mit Kohlensäure</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="calculator-summary">
-                    <span class="value">5,50</span>
-                </div>
-                <div class="calculator-action">
-                    <button>Abschluss</button>
-                </div>
             </div>
-        </aside>
-        <main class="controls">
-            <div>
-                <div class="tab tab-controls active">
-                    <div class="product-grid">
-                        <button class="product">
-                            <img src="https://placehold.co/150x150" alt="Produkt 1" height="150" width="150">
-                            <span class="product-meta">
-                                <span class="name">Longdrink with venice Ice and ctara asf as</span>
-                            </span>
-                        </button>
-                        <button class="product">
-                            <img src="https://placehold.co/150x150" alt="Produkt 1" height="150" width="150">
-                            <span class="product-meta">
-                                <span class="name">Wasser mit fadem Beigeschmack</span>
-                            </span>
-                        </button>
-                        <button class="product">
-                            <img src="https://placehold.co/150x150" alt="Produkt 1" height="150" width="150">
-                            <span class="product-meta">
-                                <span class="name">Longdrink with venice Ice and ctara asf as</span>
-                            </span>
-                        </button>
-                        <button class="product">
-                            <img src="https://placehold.co/150x150" alt="Produkt 1" height="150" width="150">
-                            <span class="product-meta">
-                                <span class="name">Longdrink with venice Ice and ctara asf as</span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-                <div class="tab tab-settings">
-                    <h2>Einstellungen</h2>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
 
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script/all.js" type="module"></script>
     <script>
         // Install the service worker for offline capabilities
         if ('serviceWorker' in navigator) {
