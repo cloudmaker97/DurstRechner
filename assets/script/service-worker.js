@@ -22,16 +22,10 @@ const FILES_TO_CACHE = [
     '/assets/favicon/favicon.ico',
 ];
 
-
-const FILES_TO_CACHE_PREFIXED = FILES_TO_CACHE.map(e => {
-    let origin = self.location.href.replace('index.html', '');
-    return origin + e;
-})
-
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(FILES_TO_CACHE_PREFIXED);
+            return cache.addAll(FILES_TO_CACHE);
         })
     );
 });
@@ -39,7 +33,25 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(response => {
-            return response || fetch(event.request);
+            return response || fetch(event.request).catch(error => {
+                console.error('Fetch failed; returning offline page instead.', error);
+                return caches.match('/offline.html'); // If you have an offline page
+            });
+        })
+    );
+});
+
+self.addEventListener('activate', event => {
+    const cacheWhitelist = [CACHE_NAME];
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (!cacheWhitelist.includes(cacheName)) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
         })
     );
 });
