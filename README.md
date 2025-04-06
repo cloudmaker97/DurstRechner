@@ -10,6 +10,13 @@ genügt).
 
 > Weitere Screenshots sind im Ordner `.github/screenshots` zu finden.
 
+## Anleitung und Hinweise
+
+- Die Anwendung ist unter <https://cloudmaker97.github.io/DurstRechner> erreichbar.
+- Die Anwendung kann auch lokal genutzt werden. Dazu einfach die Startseite einmal im Browser öffnen.
+- Neue Produkte können im Bereich 'Einstellungen' hinzugefügt werden, Produktbilder sollten im Format 1:1 sein und idealerweise 150x150px.
+- Die angelegten Produkte können auf andere Geräte übertragen werden in den Einstellungen. Einfach den Text aus dem Feld Export/Import entweder herauskopieren oder einfügen.
+
 ## Entwicklung und Installation
 
 ```bash

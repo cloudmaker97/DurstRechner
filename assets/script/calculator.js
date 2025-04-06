@@ -200,6 +200,24 @@ class Base64Image {
         });
     }
 
+    static imageResize(base64) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 250;
+                canvas.height = 250;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const dataUrl = canvas.toDataURL();
+                resolve(dataUrl);
+            };
+            img.onerror = reject;
+            img.src = base64;
+        });
+    }
+
     /**
      * Convert a file to a base64 string
      * @param file
@@ -266,7 +284,7 @@ class ProductManager {
      * Register events for the create new product button.
      */
     registerSettingsFormEvents() {
-        Element.getCreateNewProductButton().addEventListener('click', (e) => {
+        Element.getCreateNewProductButton().addEventListener('click', async (e) => {
             e.preventDefault();
 
             const name = document.querySelector('#product-name').value;
@@ -274,7 +292,7 @@ class ProductManager {
             const image = document.querySelector('#product-image').files[0];
 
             // Validate price
-            if(name.length === 0) {
+            if (name.length === 0) {
                 alert('Name muss ausgefüllt sein');
                 return;
             }
@@ -282,12 +300,13 @@ class ProductManager {
             // Turn image into base64 or use placeholder image
             if (image) {
                 const imageSrcWithBase64 = Base64Image.fromFile(image);
-                imageSrcWithBase64.then(imageSrcWithBase64 => {
-                    productManager.addProduct(new Product(name, price, imageSrcWithBase64));
+                imageSrcWithBase64.then(async imageSrcWithBase64 => {
+                    productManager.addProduct(new Product(name, price, await Base64Image.imageResize(imageSrcWithBase64)));
                     ProductManager.resetProductSettingsForm();
                 });
             } else {
-                productManager.addProduct(new Product(name, price, Base64Image.fromImageUrl('https://placehold.co/250x250?text={${name}}')));
+                let image1 = await Base64Image.imageResize(await Base64Image.fromImageUrl(`https://placehold.co/250x250?text=${name}`));
+                productManager.addProduct(new Product(name, price, image1));
                 ProductManager.resetProductSettingsForm();
             }
         });
