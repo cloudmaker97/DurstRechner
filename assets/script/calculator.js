@@ -530,6 +530,9 @@ class TabManager {
      * @param tab {string} The tab to switch to
      */
     static switchTab(tab) {
+        if(tab !== 'settings') {
+            TabManager.isSettingsTabActive = false;
+        }
         const tabs = document.querySelectorAll('[data-tab]');
         tabs.forEach(e => {
             e.classList.add('d-none');
