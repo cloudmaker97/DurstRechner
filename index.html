@@ -2,7 +2,7 @@
 <html lang="de" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="theme-color" content="#2196f3"/>
     <link rel="manifest" href="assets/manifest.json">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
@@ -18,15 +18,15 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Der Durstrechner</a>
             <form class="d-flex" role="search" method="dialog">
-                <button class="btn" data-toggle-bs-theme><i class="bi bi-lightbulb-fill"></i> Tag / Nacht</button>
-                <button class="btn" data-toggle-tab><i class="bi bi-gear"></i> Einstellungen</button>
+                <button class="btn" data-toggle-bs-theme><i class="bi bi-lightbulb-fill"></i> <span class="d-none d-md-inline-block">Tag / Nacht</span></button>
+                <button class="btn" data-toggle-tab><i class="bi bi-gear"></i>  <span class="d-none d-md-inline-block">Einstellungen</span></button>
             </form>
         </div>
     </nav>
 
     <main class="container-fluid flex-grow-1">
         <div data-tab="products" class="row">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 products">
                 <li class="list-group-item d-flex justify-content-between" data-template="product-line-item">
                         <span class="line-item-details">
                             <span class="amount quantity-value" data-attr="quantity">5</span>
@@ -43,10 +43,10 @@
                 </button>
             </div>
             <div class="col-12 col-md-8">
-                <div class="row row-cols-4 row-gap-3 product-list h-100 overflow-auto">
+                <div class="row row-cols-2 row-cols-md-5 row-gap-3 product-list h-100 overflow-auto">
                     <div class="col product-box" data-template="product" data-id="0">
                         <div class="card">
-                            <img data-attr="image" src="https://placehold.co/250x250" alt="Produktbild" class="card-img-top" loading="lazy">
+                            <img data-attr="image" src="https://placehold.co/250x250" alt="Produktbild" class="card-img-top" loading="eager">
                             <div class="card-body">
                                 <span data-attr="name">Wasser mit Kohlensäure</span>
                             </div>
@@ -56,45 +56,47 @@
             </div>
         </div>
         <div data-tab="settings" class="row d-none">
-            <div class="row">
-                <div class="col">
-                    <form class="card mb-3" method="dialog" id="new-product">
-                        <h5 class="card-header">Neues Produkt</h5>
-                        <div class="card-body">
-                            <div class="mb-2">
-                                <label for="product-name" class="form-label">Name des Produkts</label>
-                                <input type="text" class="form-control" placeholder="Tolles Produkt" id="product-name" required>
-                            </div>
-                            <div class="mb-2">
-                                <label for="product-price" class="form-label">Preis</label>
-                                <input type="number" class="form-control" step="0.01" value="0.00" id="product-price" required>
-                            </div>
-                            <div class="mb-2">
-                                <label for="product-image" class="form-label">Bild auswählen</label>
-                                <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
-                            </div>
-                            <input type="submit" class="btn btn-success" value="Speichern" id="create-product">
+            <div class="col-12 col-md-6">
+                <form class="card mb-2" method="dialog" id="new-product">
+                    <h5 class="card-header">Neues Produkt</h5>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label for="product-name" class="form-label">Name des Produkts</label>
+                            <input type="text" class="form-control" placeholder="Tolles Produkt" id="product-name" required>
                         </div>
-                    </form>
+                        <div class="mb-2">
+                            <label for="product-price" class="form-label">Preis</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">€</span>
+                            <input type="number" class="form-control" step="0.01" value="" id="product-price" required>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="product-image" class="form-label">Bild auswählen</label>
+                            <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
+                        </div>
+                        <input type="submit" class="btn btn-success" value="Speichern" id="create-product">
+                    </div>
+                </form>
 
-                    <div class="card">
-                        <h5 class="card-header">Export / Import</h5>
-                        <div class="card-body">
-                            <label class="w-100">
-                                Daten importieren oder exportieren (Kopieren und Einfügen)
-                                <textarea class="form-control mt-1" id="input-export-import"></textarea>
-                            </label>
-                        </div>
+                <div class="card">
+                    <h5 class="card-header">Export / Import</h5>
+                    <div class="card-body">
+                        <label class="w-100">
+                            Daten importieren oder exportieren (Kopieren und Einfügen)
+                            <textarea class="form-control mt-1" id="input-export-import"></textarea>
+                        </label>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card">
-                        <h5 class="card-header">Produkte entfernen</h5>
-                        <div class="card-body">
-                            <li class="list-group-item" data-template="settings-product">Test</li>
-                            <ul class="list-group settings-product-list">
-                            </ul>
-                        </div>
+            </div>
+            <div class="col-12 col-md-6 mt-2 mt-md-0">
+                <div class="card">
+                    <h5 class="card-header">Produkte entfernen</h5>
+                    <div class="card-body">
+                        <p class="mb-2">Hier können Produkte entfernt werden, die nicht mehr benötigt werden.</p>
+                        <li class="list-group-item" data-template="settings-product">Test</li>
+                        <ul class="list-group settings-product-list">
+                        </ul>
                     </div>
                 </div>
             </div>

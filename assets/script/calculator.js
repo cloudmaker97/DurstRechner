@@ -1,25 +1,116 @@
+/**
+ * Element class provides static methods to get various elements from the DOM.
+ */
+class Element {
+    /**
+     * Get the import/export textarea element
+     * @returns {HTMLTextAreaElement}
+     */
+    static getImportExportTextarea() {
+        return document.querySelector('#input-export-import');
+    }
+
+    /**
+     * Get the product list element
+     * @returns {HTMLElement}
+     */
+    static getProductListElement() {
+        return document.querySelector('.product-list');
+    }
+
+    /**
+     * Get the settings product list element
+     * @returns {HTMLElement}
+     */
+    static getSettingListElement() {
+        return document.querySelector('.settings-product-list');
+    }
+
+    /**
+     * Get the cart element
+     * @returns {HTMLElement}
+     */
+    static getCartElement() {
+        return document.querySelector('.cart-items');
+    }
+
+    /**
+     * Get the cart empty alert element
+     * @returns {HTMLElement}
+     */
+    static getCartEmptyAlertElement() {
+        return document.querySelector('.alert.cart-empty');
+    }
+
+    /**
+     * Get the create new product button element
+     * @returns {HTMLButtonElement}
+     */
+    static getCreateNewProductButton() {
+        return document.querySelector('#create-product');
+    }
+
+    /**
+     * Get the cart button element
+     * @returns {HTMLButtonElement}
+     */
+    static getCartButton() {
+        return document.querySelector('button.cart-value');
+    }
+}
+
+/**
+ * TemplateElement class provides static methods to get various templates from the DOM.
+ */
 class TemplateElement {
+    /**
+     * Get the product list element template
+     * @returns {HTMLElement}
+     */
     static getProductTemplate() {
         const element = document.querySelector('[data-template=product]').cloneNode(true);
         return this.removeTemplate(element);
     }
+
+    /**
+     * Get the cart line element template
+     * @returns {HTMLElement}
+     */
     static getCartLineTemplate() {
         const element = document.querySelector('[data-template=product-line-item]').cloneNode(true);
         return this.removeTemplate(element);
     }
 
+    /**
+     * Get the settings product element template
+     * @returns {HTMLElement}
+     */
     static getSettingsProductTemplate() {
         const element = document.querySelector('[data-template=settings-product]').cloneNode(true);
         return this.removeTemplate(element);
     }
 
+    /**
+     * Remove the template attribute from the element
+     * @param element {HTMLElement}
+     * @returns {HTMLElement}
+     */
     static removeTemplate(element) {
         element.removeAttribute('data-template');
         return element;
     }
 }
 
+/**
+ * Product class represents a product with an id, name, price, and image.
+ */
 class Product {
+    /**
+     * Product constructor
+     * @param name {string} Name of the product
+     * @param price {number} Price of the product
+     * @param image {string} Image of the product (source url or base64)
+     */
     constructor(name, price, image) {
         this.id = Product.generateId();
         this.name = name;
@@ -27,48 +118,123 @@ class Product {
         this.image = image;
     }
 
+    /**
+     * Generate a random id for the product
+     * @returns {number}
+     */
     static generateId() {
         return Math.floor(Math.random() * 1000000000) * Math.floor(Math.random() * 1000000000);
     }
 
+    /**
+     * Get the product html element by template and set the attributes by the product object
+     * @returns {HTMLElement}
+     */
     getProductElement() {
         const productElement = TemplateElement.getProductTemplate();
         productElement.setAttribute('data-id', this.id);
         productElement.querySelector('[data-attr=name]').textContent = this.name;
         productElement.querySelector('[data-attr=image]').src = this.image;
         productElement.addEventListener('click', () => {
-            cart.addProduct(this);
+            cartManager.addProduct(this);
         })
         return productElement;
     }
+
+    /**
+     * Get the settings product html element by template and set the attributes by the product object
+     * @returns {HTMLElement}
+     */
     getSettingsProductElement() {
         const productElement = TemplateElement.getSettingsProductTemplate();
         productElement.setAttribute('data-id', this.id);
         productElement.textContent = this.name;
         productElement.addEventListener('click', () => {
-            productList.removeProduct(this);
-            productList.setExportField();
+            productManager.removeProduct(this);
+            productManager.setExportFieldJsonValue();
             productElement.remove();
         })
         return productElement;
     }
 }
 
+/**
+ * CartLine class represents a line in the cart with a product and its quantity.
+ */
 class CartLine {
+    /**
+     * CartLine constructor
+     * @param product {Product}
+     * @param quantity {number}
+     */
     constructor(product, quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 }
 
-class ProductList {
+/**
+ * Base64Image class provides static methods to convert an image URL or file to a base64 string.
+ */
+class Base64Image {
+    /**
+     * Convert an image URL to a base64 string
+     * @param url
+     * @returns {Promise<string>}
+     */
+    static fromImageUrl(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                const dataUrl = canvas.toDataURL();
+                resolve(dataUrl);
+            };
+            img.onerror = reject;
+            img.src = url;
+        });
+    }
+
+    /**
+     * Convert a file to a base64 string
+     * @param file
+     * @returns {Promise<string>}
+     */
+    static fromFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
+/**
+ * ProductManager class manages the product list, including loading from JSON, adding, and removing products.
+ */
+class ProductManager {
     constructor() {
         this.loadFromJson(localStorage.getItem('products') ?? [])
-        this.setExportField();
-        this.getImportExportTextarea().addEventListener('input', (e) => {
+        this.setExportFieldJsonValue();
+        this.registerSettingsFormEvents();
+        this.registerImportFormEvents();
+    }
+
+    /**
+     * Register events for the import/export textarea.
+     */
+    registerImportFormEvents() {
+        Element.getImportExportTextarea().addEventListener('input', (e) => {
             try {
-                const json = e.target.value;
-                localStorage.setItem('products', json);
+                localStorage.setItem('products', e.target.value);
                 window.location = window.location;
             } catch (e) {
                 console.error(e);
@@ -76,10 +242,17 @@ class ProductList {
         });
     }
 
-    setExportField() {
-        this.getImportExportTextarea().textContent = JSON.stringify(this.products);
+    /**
+     * Set the JSON value of the export field to the current products.
+     */
+    setExportFieldJsonValue() {
+        Element.getImportExportTextarea().textContent = JSON.stringify(this.products);
     }
 
+    /**
+     * Load products from JSON string and parse it into Product objects, then render the product list.
+     * @param json
+     */
     loadFromJson(json) {
         let parse = [];
         try {
@@ -89,59 +262,110 @@ class ProductList {
         this.renderProductList();
     }
 
-    getImportExportTextarea() {
-        return document.querySelector('#input-export-import');
+    /**
+     * Register events for the create new product button.
+     */
+    registerSettingsFormEvents() {
+        Element.getCreateNewProductButton().addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const name = document.querySelector('#product-name').value;
+            const price = document.querySelector('#product-price').value;
+            const image = document.querySelector('#product-image').files[0];
+
+            // Validate price
+            if(name.length === 0) {
+                alert('Name muss ausgefüllt sein');
+                return;
+            }
+
+            // Turn image into base64 or use placeholder image
+            if (image) {
+                const imageSrcWithBase64 = Base64Image.fromFile(image);
+                imageSrcWithBase64.then(imageSrcWithBase64 => {
+                    productManager.addProduct(new Product(name, price, imageSrcWithBase64));
+                    ProductManager.resetProductSettingsForm();
+                });
+            } else {
+                productManager.addProduct(new Product(name, price, Base64Image.fromImageUrl('https://placehold.co/250x250?text={${name}}')));
+                ProductManager.resetProductSettingsForm();
+            }
+        });
     }
 
-    getProductListElement() {
-        return document.querySelector('.product-list');
+    /**
+     * Reset the product settings form by clearing all input fields.
+     */
+    static resetProductSettingsForm() {
+        document.querySelectorAll('form input:not([type=submit])').forEach(inputField => inputField.value = '');
     }
 
-    getSettingListElement() {
-        return document.querySelector('.settings-product-list');
-    }
-
+    /**
+     * Render the product list by clearing the existing elements and appending new ones.
+     */
     renderProductList() {
         // Clear the product list element before rendering except the template
-        this.getProductListElement().querySelectorAll('[data-id]').forEach(e => {
+        Element.getProductListElement().querySelectorAll('[data-id]').forEach(e => {
             if (e.getAttribute('data-template') === null) {
                 e.remove();
             }
         });
         this.products.forEach(e => {
-            this.getProductListElement().appendChild(e.getProductElement());
-            this.getSettingListElement().appendChild(e.getSettingsProductElement());
+            Element.getProductListElement().appendChild(e.getProductElement());
+            Element.getSettingListElement().appendChild(e.getSettingsProductElement());
         })
     }
 
+    /**
+     * Add a new product to the list and save it to local storage.
+     * @param product {Product}
+     */
     addProduct(product) {
         this.products.push(product);
         localStorage.setItem('products', JSON.stringify(this.products));
-        this.getProductListElement().appendChild(product.getProductElement());
-        this.getSettingListElement().appendChild(product.getSettingsProductElement());
-        this.setExportField();
+        Element.getProductListElement().appendChild(product.getProductElement());
+        Element.getSettingListElement().appendChild(product.getSettingsProductElement());
+        this.setExportFieldJsonValue();
     }
 
+    /**
+     * Remove a product from the list and local storage.
+     * @param product {Product}
+     */
     removeProduct(product) {
         this.products = this.products.filter(e => e.id !== product.id);
-        const productElement = this.getProductListElement().querySelector(`[data-id="${product.id}"]`);
+        const productElement = Element.getProductListElement().querySelector(`[data-id="${product.id}"]`);
         if (productElement) {
             productElement.remove();
         }
         localStorage.setItem('products', JSON.stringify(this.products));
-        this.setExportField();
+        this.setExportFieldJsonValue();
     }
 }
 
-class Cart {
+/**
+ * CartManager class manages the cart, including adding, removing products, and rendering the cart.
+ */
+class CartManager {
     constructor() {
         this.cartLines = [];
-        this.getCartButton().addEventListener('click', () => {
+        this.registerCartResetEvent();
+    }
+
+    /**
+     * Register the cart reset event to clear the cart when the button is clicked.
+     */
+    registerCartResetEvent() {
+        Element.getCartButton().addEventListener('click', () => {
             this.cartLines = [];
             this.renderCart();
         });
     }
 
+    /**
+     * Add a product to the cart. If the product already exists, increase the quantity.
+     * @param product {Product}
+     */
     addProduct(product) {
         const cartLine = this.cartLines.find(e => e.product.id === product.id);
         if (cartLine) {
@@ -152,6 +376,10 @@ class Cart {
         this.renderCart();
     }
 
+    /**
+     * Remove a product from the cart. If the quantity is 0, remove the product from the cart.
+     * @param product {Product}
+     */
     removeProduct(product) {
         const cartLine = this.cartLines.find(e => e.product.id === product.id);
         if (cartLine) {
@@ -163,33 +391,41 @@ class Cart {
         this.renderCart();
     }
 
+    /**
+     * Render the cart by clearing the existing elements and appending new ones.
+     */
     renderCart() {
         // Clear the cart element before rendering except the template
-        this.getCartElement().querySelectorAll('[data-id]').forEach(e => {
+        Element.getCartElement().querySelectorAll('[data-id]').forEach(e => {
             if (e.getAttribute('data-template') === null) {
                 e.remove();
             }
         });
 
         if(this.cartLines.length === 0) {
-            this.getAlertElement().classList.remove('d-none');
+            Element.getCartEmptyAlertElement().classList.remove('d-none');
         } else {
-            this.getAlertElement().classList.add('d-none');
+            Element.getCartEmptyAlertElement().classList.add('d-none');
         }
         this.calculateCartValue();
 
         // Render each cart line
         this.cartLines.forEach(cartLine => {
             const cartLineElement = this.getCartLineElement(cartLine);
-            this.getCartElement().appendChild(cartLineElement);
+            Element.getCartElement().appendChild(cartLineElement);
         });
     }
 
+    /**
+     * Get the cart line html element and set the attributes by the product object
+     * @param cartLine {CartLine}
+     * @returns {*}
+     */
     getCartLineElement(cartLine) {
         const cartLineElement = TemplateElement.getCartLineTemplate();
         cartLineElement.setAttribute('data-id', cartLine.product.id);
         cartLineElement.querySelector('[data-attr=name]').textContent = cartLine.product.name;
-        cartLineElement.querySelector('[data-attr=value]').textContent = Cart.getNumberFormatter().format(cartLine.product.price);
+        cartLineElement.querySelector('[data-attr=value]').textContent = CartManager.getNumberFormatter().format(cartLine.product.price);
         cartLineElement.querySelector('[data-attr=quantity]').textContent = cartLine.quantity;
         cartLineElement.addEventListener('click', () => {
             this.removeProduct(cartLine.product);
@@ -197,42 +433,60 @@ class Cart {
         return cartLineElement;
     }
 
-    getAlertElement() {
-        return document.querySelector('.alert.cart-empty');
-    }
-
-    getCartElement() {
-        return document.querySelector('.cart-items');
-    }
-
+    /**
+     * Calculate the total value of the cart by multiplying the product price with the quantity and setting it to the button.
+     */
     calculateCartValue() {
         let cartValue = this.cartLines.reduce((acc, cartLine) => {
             return acc + (cartLine.product.price * cartLine.quantity);
         }, 0);
-        this.getCartButton().querySelector('[data-total-value]').textContent = Cart.getNumberFormatter().format(cartValue);
+        Element.getCartButton().querySelector('[data-total-value]').textContent = CartManager.getNumberFormatter().format(cartValue);
     }
 
+    /**
+     * Get the number formatter for the currency.
+     * @returns {Intl.NumberFormat}
+     */
     static getNumberFormatter() {
         return new Intl.NumberFormat('de-DE', {
             currency: 'EUR',
             minimumFractionDigits: 2
         });
     }
-
-    getCartButton() {
-        return document.querySelector('button.cart-value');
-    }
 }
 
-class Tab {
+/**
+ * TabManager class manages the tabs in the settings page.
+ */
+class TabManager {
+    /**
+     * @type {boolean} If the settings tab is active or not
+     */
+    static isSettingsTabActive = false;
+
+    constructor() {
+        TabManager.isSettingsTabActive = false;
+        document.querySelector('[data-toggle-tab]').addEventListener('click', (e) => {
+            TabManager.toggleTab();
+        });
+    }
+
+    /**
+     * Toggle the active tab between settings and products.
+     */
     static toggleTab() {
-        if(!isSettingsTab) {
+        if(!TabManager.isSettingsTabActive) {
             this.switchTab('settings');
         } else {
             this.switchTab('products');
         }
-        isSettingsTab = !isSettingsTab;
+        TabManager.isSettingsTabActive = !TabManager.isSettingsTabActive;
     }
+
+    /**
+     * Switch the active tab by adding/removing the d-none class.
+     * @param tab {string} The tab to switch to
+     */
     static switchTab(tab) {
         const tabs = document.querySelectorAll('[data-tab]');
         tabs.forEach(e => {
@@ -243,41 +497,41 @@ class Tab {
     }
 }
 
-let isSettingsTab = false;
-const cart = new Cart();
-const productList = new ProductList();
-
-document.querySelector('[data-toggle-tab]').addEventListener('click', (e) => {
-    Tab.toggleTab();
-});
-
-document.querySelector('#create-product').addEventListener('click', (e) => {
-    e.preventDefault(); // Prevent form submission (if any)
-
-    const name = document.querySelector('#product-name').value;
-    let fieldPrice = document.querySelector('#product-price').value;
-    const image = document.querySelector('#product-image').files[0];
-
-    if(name.length === 0) {
-        alert('Name muss ausgefüllt sein');
-        return;
+/**
+ * ThemeManager class manages the theme of the application.
+ */
+class ThemeManager {
+    constructor() {
+        this.setBootstrapTheme(localStorage.getItem('bootstrap-theme') || 'light');
+        this.registerThemeSwitchEvent();
     }
 
-    if (image) {
-        const reader = new FileReader();
-        reader.onloadend = function () {
-            const imageBase64 = reader.result;
-            const imageSrcWithBase64 = `data:${image.type};base64,${imageBase64.split(',')[1]}`;
-            productList.addProduct(new Product(name, fieldPrice, imageSrcWithBase64));
-            document.querySelector('#product-name').value = '';
-            document.querySelector('#product-price').value = '0,00';
-            document.querySelector('#product-image').value = '';
-        };
-        reader.readAsDataURL(image);
-    } else {
-        productList.addProduct(new Product(name, fieldPrice, `https://placehold.co/250x250?text={${name}}`));
-        document.querySelector('#product-name').value = '';
-        document.querySelector('#product-price').value = '';
-        document.querySelector('#product-image').value = '';
+    /**
+     * Register events for the theme switch button.
+     */
+    registerThemeSwitchEvent() {
+        document.querySelectorAll('[data-toggle-bs-theme]').forEach(element => {
+            element.addEventListener('click', event => {
+                const theme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                this.setBootstrapTheme(theme);
+            })
+        });
     }
-});
+
+    /**
+     * Set the bootstrap theme by setting the data-bs-theme attribute on the html element and saving it to local storage.
+     * @param theme {string} The theme to set (light or dark)
+     */
+    setBootstrapTheme(theme) {
+        document.documentElement.setAttribute('data-bs-theme', theme);
+        localStorage.setItem('bootstrap-theme', theme);
+    }
+}
+
+/**
+ * Main function to initialize the application.
+ */
+const cartManager = new CartManager();
+const productManager = new ProductManager();
+const tabManager = new TabManager();
+const themeManager = new ThemeManager();

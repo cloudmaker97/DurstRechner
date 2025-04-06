@@ -1,4 +1,3 @@
-import './theme.js'
 import './calculator.js'
 import './../../node_modules/bootstrap/dist/js/bootstrap.min.js'
 

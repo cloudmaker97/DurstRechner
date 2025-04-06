@@ -10,7 +10,6 @@ const FILES_TO_CACHE = [
     `${BASE_PATH}/assets/style/stylesheet.css`,
     `${BASE_PATH}/assets/script/all.js`,
     `${BASE_PATH}/assets/script/calculator.js`,
-    `${BASE_PATH}/assets/script/theme.js`,
     `${BASE_PATH}/node_modules/bootstrap/dist/css/bootstrap.min.css`,
     `${BASE_PATH}/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js`,
     `${BASE_PATH}/node_modules/bootstrap-icons/font/bootstrap-icons.min.css`,
