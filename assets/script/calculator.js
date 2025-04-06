@@ -57,6 +57,14 @@ class Element {
     static getCartButton() {
         return document.querySelector('button.cart-value');
     }
+
+    /**
+     * Get the navbar brand element
+     * @returns {Element}
+     */
+    static getNavbarBrand() {
+        return document.querySelector('nav a.navbar-brand');
+    }
 }
 
 /**
@@ -200,6 +208,11 @@ class Base64Image {
         });
     }
 
+    /**
+     * Resize an image from a base64 string to a smaller size
+     * @param base64
+     * @returns {Promise<unknown>}
+     */
     static imageResize(base64) {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -244,6 +257,16 @@ class ProductManager {
         this.setExportFieldJsonValue();
         this.registerSettingsFormEvents();
         this.registerImportFormEvents();
+        this.registerNavbarBrandToProductEvent();
+    }
+
+    /**
+     * Register the event for the navbar brand to switch to the products tab when clicked.
+     */
+    registerNavbarBrandToProductEvent() {
+        Element.getNavbarBrand().addEventListener('click', () => {
+            TabManager.switchTab('products');
+        })
     }
 
     /**
