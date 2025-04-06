@@ -1,12 +1,10 @@
 {
   "name": "durst-rechner",
   "version": "1.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
+  "scripts": {},
+  "keywords": ["calculator", "feuerwehr", "firefighter", "pos", "thirst"],
   "author": "Dennis Heinrich",
-  "license": "proprietary",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "bootstrap": "5.3.5",
     "bootstrap-icons": "^1.11.3"
