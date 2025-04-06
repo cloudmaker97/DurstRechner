@@ -399,6 +399,9 @@ class CartManager {
      */
     registerCartResetEvent() {
         Element.getCartButton().addEventListener('click', () => {
+            CartHistoryManager.addToTotal(this.cartLines.reduce((acc, cartLine) => {
+                return acc + (cartLine.product.price * cartLine.quantity);
+            }, 0));
             this.cartLines = [];
             this.renderCart();
         });
@@ -518,11 +521,12 @@ class TabManager {
      */
     static toggleTab() {
         if(!TabManager.isSettingsTabActive) {
+            TabManager.isSettingsTabActive = true;
             this.switchTab('settings');
         } else {
             this.switchTab('products');
+            TabManager.isSettingsTabActive = false;
         }
-        TabManager.isSettingsTabActive = !TabManager.isSettingsTabActive;
     }
 
     /**
@@ -574,9 +578,28 @@ class ThemeManager {
 }
 
 /**
+ * Define the CartHistoryManager class to manage the cart history.
+ */
+class CartHistoryManager {
+    static getTotal() {
+        return localStorage.getItem('cart-total-value') || 0;
+    }
+
+    static setTotal(value) {
+        localStorage.setItem('cart-total-value', value);
+    }
+
+    static addToTotal(value) {
+        const total = parseFloat(CartHistoryManager.getTotal()) + value;
+        CartHistoryManager.setTotal(total);
+    }
+}
+
+/**
  * Main function to initialize the application.
  */
 const cartManager = new CartManager();
 const productManager = new ProductManager();
 const tabManager = new TabManager();
 const themeManager = new ThemeManager();
+const cartHistoryManager = new CartHistoryManager();
