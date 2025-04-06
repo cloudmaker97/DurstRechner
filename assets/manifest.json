@@ -1,7 +1,8 @@
 {
   "name": "Der Durstrechner",
   "short_name": "Durstrechner",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2196f3",
