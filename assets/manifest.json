@@ -1,11 +1,36 @@
 {
   "name": "Der Durstrechner",
   "short_name": "Durstrechner",
-  "start_url": "./",
+  "description": "Der Durstrechner ist ein einfaches Tool zur Berechnung von Verkaufspreisen bei Veranstaltungen.",
+  "start_url": "../",
   "scope": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2196f3",
+  "screenshots": [
+    {
+      "src": "pwa/dark.png",
+      "type": "image/png",
+      "sizes": "1064x2008"
+    },
+    {
+      "src": "pwa/light.png",
+      "type": "image/png",
+      "sizes": "1064x2008"
+    },
+    {
+      "src": "pwa/wide_dark.png",
+      "type": "image/png",
+      "form_factor": "wide",
+      "sizes": "3604x2008"
+    },
+    {
+      "src": "pwa/wide_light.png",
+      "type": "image/png",
+      "form_factor": "wide",
+      "sizes": "3604x2008"
+    }
+  ],
   "icons": [
     {
       "src": "favicon/android-chrome-192x192.png",
