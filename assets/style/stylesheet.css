@@ -21,19 +21,26 @@
     margin-left: 1em;
     font-weight: bold;
 }
+
 [data-template] {
     display: none !important;
 }
+
 .cart-items, .product-list, .alert, .navbar-brand, .settings-product-list {
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-user-drag: none;
-}
-img {
     user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;
 }
 .product-box, .cart-items, .settings-product-list {
     cursor: pointer;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 4fr));
+    gap: .4em;
+}
+
+.product-box .card-body span {
+    word-wrap: break-word;
 }

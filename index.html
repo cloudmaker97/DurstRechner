@@ -26,7 +26,7 @@
 
     <main class="container-fluid flex-grow-1">
         <div data-tab="products" class="row">
-            <div class="col-12 col-md-4 products">
+            <div class="col-12 col-md-4">
                 <li class="list-group-item d-flex justify-content-between" data-template="product-line-item">
                         <span class="line-item-details">
                             <span class="amount quantity-value" data-attr="quantity">5</span>
@@ -43,18 +43,19 @@
                 </button>
             </div>
             <div class="col-12 col-md-8">
-                <div class="row row-cols-2 row-cols-md-5 row-gap-3 product-list h-100 overflow-auto">
+                <div class="product-list">
                     <div class="col product-box" data-template="product" data-id="0">
                         <div class="card">
-                            <img data-attr="image" src="https://placehold.co/250x250" alt="Produktbild" class="card-img-top" loading="eager">
+                            <img data-attr="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+BCQAHBQICJmhD1AAAAABJRU5ErkJggg==" alt="Produktbild" class="card-img-top" loading="eager">
                             <div class="card-body">
-                                <span data-attr="name">Wasser mit Kohlensäure</span>
+                                <small data-attr="name">Wasser mit Kohlensäure</small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div data-tab="settings" class="row d-none">
             <div class="col-12 col-md-6">
                 <form class="card mb-2" method="dialog" id="new-product">
