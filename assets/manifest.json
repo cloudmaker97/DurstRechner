@@ -3,7 +3,6 @@
   "short_name": "Durstrechner",
   "description": "Der Durstrechner ist ein einfaches Tool zur Berechnung von Verkaufspreisen bei Veranstaltungen.",
   "start_url": "../",
-  "scope": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2196f3",

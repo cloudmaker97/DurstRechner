@@ -1,0 +1,62 @@
+[
+  {
+    "id": 75086086956949000,
+    "name": "Wasser",
+    "price": "0.5",
+    "image": "https://placehold.co/250x250?text=1"
+  },
+  {
+    "id": 403980494034923100,
+    "name": "Cola",
+    "price": "1",
+    "image": "https://placehold.co/250x250?text=2"
+  },
+  {
+    "id": 174111295271372860,
+    "name": "Fanta",
+    "price": "1",
+    "image": "https://placehold.co/250x250?text=3"
+  },
+  {
+    "id": 13086165444583086,
+    "name": "Bier",
+    "price": "1.5",
+    "image": "https://placehold.co/250x250?text=4"
+  },
+  {
+    "id": 227920082494117630,
+    "name": "Helles Bier",
+    "price": "1.2",
+    "image": "https://placehold.co/250x250?text=5"
+  },
+  {
+    "id": 27617349687000040,
+    "name": "Apfelsaft",
+    "price": "1.2",
+    "image": "https://placehold.co/250x250?text=6"
+  },
+  {
+    "id": 191783545996520450,
+    "name": "Eistee",
+    "price": "1.5",
+    "image": "https://placehold.co/250x250?text=7"
+  },
+  {
+    "id": 203321763516746460,
+    "name": "Cider",
+    "price": "1.8",
+    "image": "https://placehold.co/250x250?text=8"
+  },
+  {
+    "id": 615216202376277900,
+    "name": "Zitronenlimonade",
+    "price": "1",
+    "image": "https://placehold.co/250x250?text=9"
+  },
+  {
+    "id": 363150314621734500,
+    "name": "Wodka Lemon",
+    "price": "3",
+    "image": "https://placehold.co/250x250?text=10"
+  }
+]

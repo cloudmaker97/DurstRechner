@@ -1,5 +1,5 @@
 import './calculator.js'
-import './../../node_modules/bootstrap/dist/js/bootstrap.min.js'
+import './../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

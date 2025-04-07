@@ -1,51 +1,110 @@
-.line-item-details {
-    .amount {
-        display: inline-block;
-        min-width: 1.5em;
-    }
-    .price {
-        display: inline-block;
-        min-width: 3em;
-    }
+/**
+ * Here are some variables that are used in the whole application.
+ */
+:root {
+    --currency-symbol: '€';
+    --separator: '|';
+    --price-color-light-mode: var(--bs-primary-rgb);
+    --price-color-dark-mode: var(--bs-info-rgb);
 }
-.product-list {
-    padding-bottom: 1em;
-}
-.currency-value::after {
-    content: ' €';
-}
-.quantity-value::after {
-    content: 'x ';
-}
-.name-value {
-    margin-left: 1em;
-    font-weight: bold;
-}
-
-[data-template] {
-    display: none !important;
-}
-
+/**
+ * Let the user never select the text in the product list, cart items, alert and navbar brand.
+ * This is used to prevent the user from selecting the text in the product list and cart items. (Usability)
+ */
 .cart-items, .product-list, .alert, .navbar-brand, .settings-product-list {
     user-select: none;
     -webkit-user-select: none;
     -webkit-user-drag: none;
 }
-img {
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    user-drag: none;
-}
-.product-box, .cart-items, .settings-product-list {
+/**
+ * Make product boxes, cart items and settings product list clickable
+ * This is generally used for product list and cart items
+ */
+.product-box, .cart-items, .settings-product-list, .navbar-brand {
     cursor: pointer;
 }
-
+/**
+ * This is a dummy element, that can be copied via JavaScript
+ * and will be filled dynamically with some data.
+ */
+[data-template] {
+    display: none !important;
+}
+/**
+ * This is the cart with its line items
+ */
+.cart {
+    .line-item-details {
+        .amount {
+            display: inline-block;
+            min-width: 1.5em;
+        }
+        .price {
+            display: inline-block;
+            min-width: 3em;
+        }
+        .name {
+            margin-left: 1em;
+            font-weight: bold;
+        }
+    }
+}
+/**
+ * Product list contains all available products,
+ * which are displayed in a grid layout. The grid scaling is done by bootstrap.
+ */
 .product-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 4fr));
     gap: .4em;
-}
+    padding-bottom: 1em;
 
-.product-box .card-body span {
-    word-wrap: break-word;
+    /**
+     * Product box for product list
+     * @param {string} data-attr - product attribute
+     */
+    .product-box {
+        /* Product box should be clickable */
+        cursor: pointer;
+
+        /* Images shouldn't drag in user interface */
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            user-drag: none;
+        }
+
+        /* Break the words on the card body */
+        .card-body span {
+            word-wrap: break-word;
+        }
+        /* Slightly bold font for the price attribute */
+        .product-box small[data-attr=price] {
+            font-weight: 400;
+        }
+    }
+}
+/* When using dark mode, use info color for price */
+[data-bs-theme="dark"] {
+    .product-box small[data-attr=price] {
+        color: rgba(var(--price-color-dark-mode));
+    }
+}
+/* When using light mode, use primary color for price */
+[data-bs-theme="light"] {
+    .product-box small[data-attr=price] {
+        color: rgba(var(--price-color-light-mode));
+    }
+}
+/* Insert currency symbol after each value */
+.currency-value::after {
+    content: ' ' var(--currency-symbol);
+}
+/* Insert separator */
+.separator::after {
+    content: ' ' var(--separator) ' ';
+}
+/* Insert times x symbol after an amount */
+.quantity-value::after {
+    content: 'x ';
 }

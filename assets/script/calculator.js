@@ -63,7 +63,20 @@ class Element {
      * @returns {Element}
      */
     static getNavbarBrand() {
-        return document.querySelector('nav a.navbar-brand');
+        return document.querySelector('.navbar-brand');
+    }
+
+    static getButtonsImportTestdata() {
+        return document.querySelectorAll('[data-action=import-testdata]');
+    }
+    static getButtonShowTestdata() {
+        return document.querySelectorAll('[data-action=import-show-testdata]');
+    }
+    static getButtonClearTestdata() {
+        return document.querySelectorAll('[data-action=import-clear]');
+    }
+    static getGitHubReferenceLink() {
+        return document.querySelector('[data-github-ref]');
     }
 }
 
@@ -142,6 +155,7 @@ class Product {
         const productElement = TemplateElement.getProductTemplate();
         productElement.setAttribute('data-id', this.id);
         productElement.querySelector('[data-attr=name]').textContent = this.name;
+        productElement.querySelector('[data-attr=price]').textContent = CartManager.getNumberFormatter().format(this.price);
         productElement.querySelector('[data-attr=image]').src = this.image;
         productElement.addEventListener('click', () => {
             cartManager.addProduct(this);
@@ -273,14 +287,39 @@ class ProductManager {
      * Register events for the import/export textarea.
      */
     registerImportFormEvents() {
-        Element.getImportExportTextarea().addEventListener('input', (e) => {
+        Element.getButtonsImportTestdata().forEach(button => {
+            button.addEventListener('click', async () => {
+                await fetch('assets/example/example.json').then(r => r.json()).then(async json => {
+                    await this.convertAndSaveProductImages(json);
+                    location.reload();
+                })
+            });
+        })
+
+        Element.getImportExportTextarea().addEventListener('input', async (e) => {
             try {
-                localStorage.setItem('products', e.target.value);
-                window.location = window.location;
+                const json = JSON.parse(e.target.value);
+                await this.convertAndSaveProductImages(json);
+                location.reload();
             } catch (e) {
                 console.error(e);
             }
         });
+    }
+
+    /**
+     * Convert and save product images from JSON string to base64 and save it to local storage.
+     * @param json
+     * @returns {Promise<void>}
+     */
+    async convertAndSaveProductImages(json) {
+        const products = json.map(e => new Product(e.name, e.price, e.image));
+        for (const product of products) {
+            if (!product.image.toString().startsWith('data:image/')) {
+                product.image = await Base64Image.imageResize(await Base64Image.fromImageUrl(product.image))
+            }
+        }
+        localStorage.setItem('products', JSON.stringify(products));
     }
 
     /**
@@ -553,6 +592,16 @@ class ThemeManager {
     constructor() {
         this.setBootstrapTheme(localStorage.getItem('bootstrap-theme') || 'light');
         this.registerThemeSwitchEvent();
+        this.showGitHubIconOnAlternateInstallation();
+    }
+
+    /**
+     * Show the GitHub icon on alternate installation if the URL does not start with the specified string.
+     */
+    showGitHubIconOnAlternateInstallation() {
+        if (!location.href.startsWith('https://cloudmaker97.github.io/DurstRechner')) {
+            Element.getGitHubReferenceLink().classList.remove('visually-hidden');
+        }
     }
 
     /**

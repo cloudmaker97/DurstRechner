@@ -14,96 +14,140 @@
     <title>Durstrechner</title>
 </head>
 <body class="d-flex flex-column vh-100">
-    <nav class="navbar navbar-expand-lg border-bottom mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Der Durstrechner</a>
-            <form class="d-flex" role="search" method="dialog">
-                <button class="btn" data-toggle-bs-theme><i class="bi bi-lightbulb-fill"></i> <span class="d-none d-md-inline-block">Tag / Nacht</span></button>
-                <button class="btn" data-toggle-tab><i class="bi bi-gear"></i>  <span class="d-none d-md-inline-block">Einstellungen</span></button>
-            </form>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg border-bottom mb-3">
+    <div class="container-fluid">
+        <span class="navbar-brand d-flex gap-2" href="#">
+            <span>Der Durstrechner</span>
+            <a href="https://github.com/cloudmaker97/DurstRechner" class="text-white visually-hidden" title="Projekt auf GitHub" data-github-ref style="width: 20px; height: 20px;">
+                <i class="bi bi-github"></i>
+            </a>
+        </span>
 
-    <main class="container-fluid flex-grow-1">
-        <div data-tab="products" class="row">
-            <div class="col-12 col-md-4">
-                <li class="list-group-item d-flex justify-content-between" data-template="product-line-item">
-                        <span class="line-item-details">
-                            <span class="amount quantity-value" data-attr="quantity">5</span>
-                            <span class="price currency-value" data-attr="value">2,50</span>
-                            <span class="name name-value" data-attr="name">Wasser mit Kohlensäure</span>
-                        </span>
-                    <i class="bi bi-dash-circle"></i>
-                </li>
-                <ul class="list-group cart-items"></ul>
-                <div class="alert alert-info cart-empty">Keine Produkte ausgewählt</div>
-                <hr>
-                <button class="btn btn-secondary btn-lg w-100 cart-value mb-3">
-                    <span class="currency-value" data-total-value>0,00</span>
-                </button>
-            </div>
-            <div class="col-12 col-md-8">
-                <div class="product-list">
-                    <div class="col product-box" data-template="product" data-id="0">
-                        <div class="card">
-                            <img data-attr="image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+BCQAHBQICJmhD1AAAAABJRU5ErkJggg==" alt="Produktbild" class="card-img-top" loading="eager">
-                            <div class="card-body">
-                                <small data-attr="name">Wasser mit Kohlensäure</small>
-                            </div>
+        <form class="d-flex" role="search" method="dialog">
+            <button class="btn" data-toggle-bs-theme>
+                <i class="bi bi-lightbulb-fill"></i> <span class="d-none d-md-inline-block">Tag / Nacht</span>
+            </button>
+            <button class="btn" data-toggle-tab>
+                <i class="bi bi-gear"></i> <span class="d-none d-md-inline-block">Einstellungen</span>
+            </button>
+        </form>
+    </div>
+</nav>
+
+<main class="container-fluid flex-grow-1">
+    <div data-tab="products" class="row">
+        <aside class="col-12 col-md-4 cart">
+            <li class="list-group-item d-flex justify-content-between" data-template="product-line-item">
+                <span class="line-item-details">
+                    <span class="amount quantity-value" data-attr="quantity">5</span>
+                    <span class="price currency-value" data-attr="value">2,50</span>
+                    <span class="name name-value" data-attr="name">Wasser mit Kohlensäure</span>
+                </span>
+                <i class="bi bi-dash-circle"></i>
+            </li>
+            <ul class="list-group cart-items"></ul>
+            <div class="alert alert-info cart-empty">Keine Produkte ausgewählt</div>
+            <hr>
+            <button class="btn btn-secondary btn-lg w-100 cart-value mb-3">
+                <span class="currency-value" data-total-value>0,00</span>
+            </button>
+        </aside>
+        <div class="col-12 col-md-8">
+            <div class="product-list">
+                <div class="col product-box" data-template="product" data-id="0">
+                    <div class="card">
+                        <img data-attr="image"
+                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+BCQAHBQICJmhD1AAAAABJRU5ErkJggg=="
+                             alt="Produktbild" class="card-img-top" loading="eager">
+                        <div class="card-body">
+                            <small data-attr="price" class="currency-value">0,00</small>
+                            <i class="separator"></i>
+                            <small data-attr="name">Wasser mit Kohlensäure</small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div data-tab="settings" class="row d-none">
-            <div class="col-12 col-md-6">
-                <form class="card mb-2" method="dialog" id="new-product">
-                    <h5 class="card-header">Neues Produkt</h5>
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <label for="product-name" class="form-label">Name des Produkts</label>
-                            <input type="text" class="form-control" placeholder="Tolles Produkt" id="product-name" required>
-                        </div>
-                        <div class="mb-2">
-                            <label for="product-price" class="form-label">Preis</label>
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1">€</span>
-                            <input type="number" class="form-control" step="0.01" value="" id="product-price" required>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <label for="product-image" class="form-label">Bild auswählen</label>
-                            <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
-                        </div>
-                        <input type="submit" class="btn btn-success" value="Speichern" id="create-product">
+    </div>
+    <div data-tab="settings" class="row d-none">
+        <aside class="col-12 col-md-6">
+            <form class="card mb-2" method="dialog" id="new-product">
+                <h5 class="card-header">Neues Produkt</h5>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label for="product-name" class="form-label">Name des Produkts</label>
+                        <input type="text" class="form-control" placeholder="Tolles Produkt" id="product-name" required>
                     </div>
-                </form>
+                    <div class="mb-2">
+                        <label for="product-price" class="form-label">Preis</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">€</span>
+                            <input type="number" class="form-control" step="0.01" value="" id="product-price" required>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="product-image" class="form-label">Bild auswählen</label>
+                        <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Speichern" id="create-product">
+                </div>
+            </form>
 
-                <div class="card">
-                    <h5 class="card-header">Export / Import</h5>
-                    <div class="card-body">
-                        <label class="w-100">
-                            Daten importieren oder exportieren (Kopieren und Einfügen)
+            <div class="card">
+                <h5 class="card-header">Export / Import</h5>
+                <div class="card-body">
+                    <details class="mb-2">
+                        <summary>Exportieren und Importieren</summary>
+                        <p>
+                            Die Daten können im JSON-Format exportiert und importiert werden.
+                            Um Speicherplatz zu sparen, sollte das Bild im Format 1:1 vorliegen.
+                            Ideal ist eine Bildgröße von 250x250 Pixel. Wenn ein Bild über eine URL bereitgestellt wird,
+                            lädt die Software das Bild herunter und speichert es in der JSON-Datei als Base64-kodierte
+                            Version. Die ursprüngliche URL wird dabei nicht mehr gespeichert.
+                        </p>
+                        <label class="w-100 form-label">
+                            <b>Text zum Kopieren und Einfügen:</b>
                             <textarea class="form-control mt-1" id="input-export-import" spellcheck="false"></textarea>
                         </label>
-                    </div>
+                    </details>
+                    <details>
+                        <summary>Testdaten installieren</summary>
+                        <p>
+                            Über den Knopf "Testdaten einspielen" können Testdaten in die Software importiert werden
+                            oder auch angezeigt werden. Die Daten können nach eigenen Belieben bearbeitet werden. Die
+                            Testdaten könnten einen kleinen Augenblick laden, da sie erst heruntergeladen werden müssen.
+                        </p>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-secondary" data-action="import-testdata">
+                                Testdaten einspielen
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+                                    data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                                <span class="visually-hidden">Testdaten einspielen</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/assets/example/example.json">Import-Datei anzeigen</a></li>
+                                <li><a class="dropdown-item" href="/assets/example/example_urls.json">Import-Datei mit URLs anzeigen</a></li>
+                            </ul>
+                        </div>
+                    </details>
                 </div>
             </div>
-            <div class="col-12 col-md-6 mt-2 mt-md-0">
-                <div class="card">
-                    <h5 class="card-header">Produkte entfernen</h5>
-                    <div class="card-body">
-                        <p class="mb-2">Hier können Produkte entfernt werden, die nicht mehr benötigt werden.</p>
-                        <li class="list-group-item" data-template="settings-product">Test</li>
-                        <ul class="list-group settings-product-list">
-                        </ul>
-                    </div>
+        </aside>
+        <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <div class="card">
+                <h5 class="card-header">Produkte entfernen</h5>
+                <div class="card-body">
+                    <p class="mb-2">Hier können Produkte entfernt werden, die nicht mehr benötigt werden.</p>
+                    <li class="list-group-item" data-template="settings-product">Test</li>
+                    <ul class="list-group settings-product-list">
+                    </ul>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <script src="assets/script/all.js" type="module"></script>
+<script src="assets/script/all.js" type="module"></script>
 </body>
 </html>
