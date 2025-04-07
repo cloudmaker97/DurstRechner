@@ -31,6 +31,11 @@
     -webkit-user-select: none;
     -webkit-user-drag: none;
 }
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    user-drag: none;
+}
 .product-box, .cart-items, .settings-product-list {
     cursor: pointer;
 }
