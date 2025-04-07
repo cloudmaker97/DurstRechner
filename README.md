@@ -1,3 +1,7 @@
+![preview.png](.github/screenshots/header.png)
+
+> Weitere Screenshots sind im Ordner `.github/screenshots` zu finden.
+
 # Der Durstrechner
 
 Der Durstrechner ist eine einfache Webanwendung, die den Getränkeverkauf bei Veranstaltungen unterstützt. 
@@ -6,9 +10,6 @@ ist auch offline verfügbar und kann ohne Internetverbindung genutzt werden (Ser
 Einrichtung wird eine Internetverbindung empfohlen (das einmalige Aufrufen der Seite im Browser mit einer Internetverbindung 
 genügt).
 
-![preview.png](.github/screenshots/preview.png)
-
-> Weitere Screenshots sind im Ordner `.github/screenshots` zu finden.
 
 ## Anleitung und Hinweise
 
@@ -24,6 +25,5 @@ genügt).
 pnpm install
 
 # Startet den Entwicklungsserver
-npx http-server -o . 
+npx http-server -o .
 ```
-

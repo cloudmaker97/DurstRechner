@@ -8,26 +8,32 @@
   "theme_color": "#2196f3",
   "screenshots": [
     {
-      "src": "pwa/dark.png",
+      "src": "pwa/logo.png",
       "type": "image/png",
-      "sizes": "1064x2008"
-    },
-    {
-      "src": "pwa/light.png",
-      "type": "image/png",
-      "sizes": "1064x2008"
-    },
-    {
-      "src": "pwa/wide_dark.png",
-      "type": "image/png",
+      "sizes": "1024x1024",
       "form_factor": "wide",
-      "sizes": "3604x2008"
+      "label": "Durstrechner Logo"
     },
     {
-      "src": "pwa/wide_light.png",
+      "src": "pwa/wide.png",
       "type": "image/png",
+      "sizes": "2988x2014",
       "form_factor": "wide",
-      "sizes": "3604x2008"
+      "label": "Anzeige der Webseite"
+    },
+    {
+      "src": "pwa/logo.png",
+      "type": "image/png",
+      "sizes": "1024x1024",
+      "form_factor": "narrow",
+      "label": "Durstrechner Logo"
+    },
+    {
+      "src": "pwa/tall.png",
+      "type": "image/png",
+      "sizes": "1092x2016",
+      "form_factor": "narrow",
+      "label": "Anzeige der Webseite"
     }
   ],
   "icons": [
