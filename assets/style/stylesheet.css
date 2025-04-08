@@ -59,6 +59,10 @@
     gap: .4em;
     padding-bottom: 1em;
 
+    @media screen and (max-width: 500px) {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 4fr));
+    }
+
     /**
      * Product box for product list
      * @param {string} data-attr - product attribute
