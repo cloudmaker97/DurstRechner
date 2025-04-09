@@ -77,15 +77,34 @@ class Element {
         return document.querySelector('.navbar-brand');
     }
 
+    /**
+     * Get the buttons for importing test data
+     * @returns {Element}
+     */
     static getButtonsImportTestdata() {
         return document.querySelectorAll('[data-action=import-testdata]');
     }
+
+    /**
+     * Get the buttons for showing the test data
+     * @returns {Element}
+     */
     static getButtonShowTestdata() {
         return document.querySelectorAll('[data-action=import-show-testdata]');
     }
+
+    /**
+     * Get the button for clearing the test data
+     * @returns {Element}
+     */
     static getButtonClearTestdata() {
         return document.querySelectorAll('[data-action=import-clear]');
     }
+
+    /**
+     * Get the button for accessing the GitHub repository
+     * @returns {Element}
+     */
     static getGitHubReferenceLink() {
         return document.querySelector('[data-github-ref]');
     }
@@ -123,6 +142,15 @@ class TemplateElement {
     }
 
     /**
+     * Get the deposit element template
+     * @returns {HTMLElement}
+     */
+    static getDepositTemplate() {
+        const element = document.querySelector('[data-template=product-deposit]').cloneNode(true);
+        return this.removeTemplate(element);
+    }
+
+    /**
      * Remove the template attribute from the element
      * @param element {HTMLElement}
      * @returns {HTMLElement}
@@ -143,11 +171,12 @@ class Product {
      * @param price {number} Price of the product
      * @param image {string} Image of the product (source url or base64)
      */
-    constructor(name, price, image) {
+    constructor(name, price, deposit, image) {
         this.id = Product.generateId();
         this.name = name;
         this.price = price;
         this.image = image;
+        this.deposit = deposit;
     }
 
     /**
@@ -324,7 +353,7 @@ class ProductManager {
      * @returns {Promise<void>}
      */
     async convertAndSaveProductImages(json) {
-        const products = json.map(e => new Product(e.name, e.price, e.image));
+        const products = json.map(e => new Product(e.name, e.price, e.deposit, e.image));
         for (const product of products) {
             if (!product.image.toString().startsWith('data:image/')) {
                 product.image = await Base64Image.imageResize(await Base64Image.fromImageUrl(product.image))
@@ -349,7 +378,7 @@ class ProductManager {
         try {
             parse = JSON.parse(json);
         } catch (e) {}
-        this.products = parse.map(e => new Product(e.name, e.price, e.image));
+        this.products = parse.map(e => new Product(e.name, e.price, e.deposit, e.image));
         this.renderProductList();
     }
 
@@ -362,6 +391,7 @@ class ProductManager {
 
             const name = document.querySelector('#product-name').value;
             const price = document.querySelector('#product-price').value;
+            const deposit = document.querySelector('#product-deposit').value;
             const image = document.querySelector('#product-image').files[0];
 
             // Validate price
@@ -374,12 +404,12 @@ class ProductManager {
             if (image) {
                 const imageSrcWithBase64 = Base64Image.fromFile(image);
                 imageSrcWithBase64.then(async imageSrcWithBase64 => {
-                    productManager.addProduct(new Product(name, price, await Base64Image.imageResize(imageSrcWithBase64)));
+                    productManager.addProduct(new Product(name, price, deposit, await Base64Image.imageResize(imageSrcWithBase64)));
                     ProductManager.resetProductSettingsForm();
                 });
             } else {
-                let image1 = await Base64Image.imageResize(await Base64Image.fromImageUrl(`https://placehold.co/250x250?text=${name}`));
-                productManager.addProduct(new Product(name, price, image1));
+                let imageDemoBase64 = await Base64Image.imageResize(await Base64Image.fromImageUrl(`https://placehold.co/250x250?text=${name}`));
+                productManager.addProduct(new Product(name, price, deposit, imageDemoBase64));
                 ProductManager.resetProductSettingsForm();
             }
         });
@@ -450,7 +480,7 @@ class CartManager {
     registerCartResetEvent() {
         Element.getCartButton().addEventListener('click', () => {
             CartHistoryManager.addToTotal(this.cartLines.reduce((acc, cartLine) => {
-                return acc + (cartLine.product.price * cartLine.quantity);
+                return acc + (cartLine.product.price * cartLine.quantity) + (cartLine.product.deposit * cartLine.quantity);
             }, 0));
             this.cartLines = [];
             this.renderCart();
@@ -491,10 +521,12 @@ class CartManager {
      */
     renderCart() {
         // Clear the cart element before rendering except the template
-        Element.getCartElement().querySelectorAll('[data-id]').forEach(e => {
+        Element.getCartElement().querySelectorAll('[data-id], .product-deposit').forEach(e => {
             if (e.getAttribute('data-template') === null) {
                 e.remove();
             }
+
+            console.log(e)
         });
 
         if(this.cartLines.length === 0) {
@@ -509,6 +541,16 @@ class CartManager {
             const cartLineElement = this.getCartLineElement(cartLine);
             Element.getCartElement().appendChild(cartLineElement);
         });
+
+        let depositTotal = 0;
+        this.cartLines.forEach(cartLine => {
+            depositTotal += cartLine.product.deposit * cartLine.quantity;
+        });
+        if(depositTotal !== 0) {
+            let depositElement = TemplateElement.getDepositTemplate();
+            depositElement.querySelector('[data-attr=deposit]').textContent = CartManager.getNumberFormatter().format(depositTotal);
+            Element.getCartElement().appendChild(depositElement);
+        }
     }
 
     /**
@@ -533,7 +575,7 @@ class CartManager {
      */
     calculateCartValue() {
         let cartValue = this.cartLines.reduce((acc, cartLine) => {
-            return acc + (cartLine.product.price * cartLine.quantity);
+            return acc + (cartLine.product.price * cartLine.quantity) + (cartLine.product.deposit * cartLine.quantity);
         }, 0);
         Element.getCartButton().querySelector('[data-total-value]').textContent = CartManager.getNumberFormatter().format(cartValue);
     }

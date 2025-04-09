@@ -1,7 +1,9 @@
 {
   "name": "durst-rechner",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "dev": "npx http-server -o ."
+  },
   "keywords": [
     "calculator",
     "feuerwehr",

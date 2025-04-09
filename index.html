@@ -45,7 +45,12 @@
                 </span>
                 <i class="bi bi-dash-circle"></i>
             </li>
-            <ul class="list-group cart-items"></ul>
+            <li class="list-group-item product-deposit" data-template="product-deposit">
+                Zzgl. <span data-attr="deposit" class="currency-value">0,00</span> Pfand
+            </li>
+
+            <ul class="list-group cart-items">
+            </ul>
             <div class="alert alert-info cart-empty">Keine Produkte ausgewählt</div>
             <hr>
             <button class="btn btn-secondary btn-lg w-100 cart-value mb-3">
@@ -83,6 +88,13 @@
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">€</span>
                             <input type="number" class="form-control" step="0.01" value="" id="product-price" required>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="product-deposit" class="form-label">Pfand</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon2">€</span>
+                            <input type="number" class="form-control" step="0.01" value="" id="product-deposit" required>
                         </div>
                     </div>
                     <div class="mb-2">

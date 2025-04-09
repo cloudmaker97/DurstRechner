@@ -48,6 +48,9 @@
             font-weight: bold;
         }
     }
+    .product-deposit {
+        cursor: default;
+    }
 }
 /**
  * Product list contains all available products,
