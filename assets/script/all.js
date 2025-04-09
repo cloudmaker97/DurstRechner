@@ -169,6 +169,7 @@ class Product {
      * Product constructor
      * @param name {string} Name of the product
      * @param price {number} Price of the product
+     * @param deposit {number} Deposit of the product
      * @param image {string} Image of the product (source url or base64)
      */
     constructor(name, price, deposit, image) {
@@ -480,7 +481,7 @@ class CartManager {
     registerCartResetEvent() {
         Element.getCartButton().addEventListener('click', () => {
             CartHistoryManager.addToTotal(this.cartLines.reduce((acc, cartLine) => {
-                return acc + (cartLine.product.price * cartLine.quantity) + (cartLine.product.deposit * cartLine.quantity);
+                return acc + (cartLine.product.price * cartLine.quantity) + ((cartLine.product.deposit??0) * cartLine.quantity);
             }, 0));
             this.cartLines = [];
             this.renderCart();
@@ -525,8 +526,6 @@ class CartManager {
             if (e.getAttribute('data-template') === null) {
                 e.remove();
             }
-
-            console.log(e)
         });
 
         if(this.cartLines.length === 0) {
@@ -544,7 +543,7 @@ class CartManager {
 
         let depositTotal = 0;
         this.cartLines.forEach(cartLine => {
-            depositTotal += cartLine.product.deposit * cartLine.quantity;
+            depositTotal += (cartLine.product.deposit??0) * cartLine.quantity;
         });
         if(depositTotal !== 0) {
             let depositElement = TemplateElement.getDepositTemplate();
@@ -575,7 +574,7 @@ class CartManager {
      */
     calculateCartValue() {
         let cartValue = this.cartLines.reduce((acc, cartLine) => {
-            return acc + (cartLine.product.price * cartLine.quantity) + (cartLine.product.deposit * cartLine.quantity);
+            return acc + (cartLine.product.price * cartLine.quantity) + ((cartLine.product.deposit??0) * cartLine.quantity);
         }, 0);
         Element.getCartButton().querySelector('[data-total-value]').textContent = CartManager.getNumberFormatter().format(cartValue);
     }
