@@ -105,6 +105,10 @@
         .product-box small[data-attr=price] {
             font-weight: 400;
         }
+        /* Make the product box clickable */
+        &:active{
+            transform:scale(0.96);
+        }
     }
 }
 /* When using dark mode, use info color for price */
