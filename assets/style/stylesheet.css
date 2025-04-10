@@ -20,7 +20,7 @@
  * Make product boxes, cart items and settings product list clickable
  * This is generally used for product list and cart items
  */
-.product-box, .cart-items, .settings-product-list, .navbar-brand {
+.product-box, .cart-items, .navbar-brand {
     cursor: pointer;
 }
 /**

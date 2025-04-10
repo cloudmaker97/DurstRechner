@@ -101,7 +101,9 @@
                         <label for="product-image" class="form-label">Bild auswählen</label>
                         <input type="file" class="form-control" placeholder="Tolles Produkt" id="product-image">
                     </div>
+                    <input type="hidden" name="edit-product-id">
                     <input type="submit" class="btn btn-success" value="Speichern" id="create-product">
+                    <input type="reset" class="btn btn-secondary" value="Zurücksetzen" onclick="document.querySelector('[name=edit-product-id]').value = ''">
                 </div>
             </form>
 
@@ -177,10 +179,20 @@
         </aside>
         <div class="col-12 col-md-6 mt-2 mt-md-0">
             <div class="card">
-                <h5 class="card-header">Produkte entfernen</h5>
+                <h5 class="card-header">Produkte</h5>
                 <div class="card-body">
-                    <p class="mb-2">Hier können Produkte entfernt werden, die nicht mehr benötigt werden.</p>
-                    <li class="list-group-item" data-template="settings-product">Test</li>
+                    <p class="mb-2">Hier können Produkte entfernt oder werden.</p>
+                    <li class="list-group-item" data-template="settings-product">
+                        <span class="d-flex justify-content-between">
+                            <span data-attr="name"></span>
+                            <span>
+                                <button class="mx-auto btn btn-secondary btn-sm" data-action="edit">Bearbeiten</button>
+                            <button class="mx-auto btn btn-warning btn-sm" data-action="delete">Entfernen</button>
+                            </span>
+
+                        </span>
+
+                    </li>
                     <ul class="list-group settings-product-list">
                     </ul>
                 </div>

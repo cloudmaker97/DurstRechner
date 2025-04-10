@@ -235,11 +235,46 @@ class Product {
     getSettingsProductElement() {
         const productElement = TemplateElement.getSettingsProductTemplate();
         productElement.setAttribute('data-id', this.id);
-        productElement.textContent = this.name;
-        productElement.addEventListener('click', () => {
+        productElement.querySelector('[data-attr=name]').textContent = this.name;
+        productElement.querySelector('[data-action=delete]').addEventListener('click', () => {
             productManager.removeProduct(this);
             productManager.setExportFieldJsonValue();
             productElement.remove();
+        })
+        productElement.querySelector('[data-action=edit]').addEventListener('click', () => {
+            const nameInputField = document.querySelector('#product-name');
+            const priceInputField = document.querySelector('#product-price');
+            const depositInputField = document.querySelector('#product-deposit');
+            const imageInputField = document.querySelector('#product-image');
+            const editProductId = document.querySelector("[name=edit-product-id]");
+            nameInputField.value = this.name;
+            priceInputField.value = this.price;
+            depositInputField.value = this.deposit;
+            editProductId.value = this.id;
+
+            // Set the image input field, create a new file object and set it to the input field by base64
+            const base64Image = this.image.split(',')[1];
+            const byteCharacters = atob(base64Image);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/png' });
+            const file = new File([blob], 'image.png', { type: 'image/png' });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            imageInputField.files = dataTransfer.files;
+            imageInputField.dispatchEvent(new Event('change'));
+
+            // Remove the product element from the settings list if the product has been saved
+            Element.getCreateNewProductButton().addEventListener('click', (e) => {
+                console.log(document.querySelector("[name=edit-product-id]"), this.id.toString());
+                if(document.querySelector("[name=edit-product-id]").value === this.id.toString()) {
+                    productManager.removeProduct(this);
+                    productElement.remove();
+                }
+            });
         })
         return productElement;
     }
@@ -472,7 +507,7 @@ class ProductManager {
      * Reset the product settings form by clearing all input fields.
      */
     static resetProductSettingsForm() {
-        document.querySelectorAll('form input:not([type=submit])').forEach(inputField => inputField.value = '');
+        document.querySelectorAll('form input:not([type=submit], [type=reset])').forEach(inputField => inputField.value = '');
     }
 
     /**
