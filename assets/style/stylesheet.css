@@ -71,7 +71,7 @@
  */
 .product-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 4fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 4fr));
     gap: .4em;
     padding-bottom: 1em;
 
@@ -93,7 +93,10 @@
             -khtml-user-drag: none;
             user-drag: none;
         }
-
+        /* Make the product box responsive */
+        .card {
+            height: 100%;
+        }
         /* Break the words on the card body */
         .card-body span {
             word-wrap: break-word;
