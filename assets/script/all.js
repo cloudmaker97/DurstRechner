@@ -745,3 +745,10 @@ Element.getFileImportButton().addEventListener('click', () => {
         reader.readAsText(fileContent);
     }
 })
+
+document.addEventListener('touchstart', function (e) {
+    if (window.scrollY === 0) {
+        e.preventDefault();
+    }
+});
+
