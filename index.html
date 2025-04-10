@@ -117,6 +117,24 @@
                             lädt die Software das Bild herunter und speichert es in der JSON-Datei als Base64-kodierte
                             Version. Die ursprüngliche URL wird dabei nicht mehr gespeichert.
                         </p>
+
+
+                        <div class="">
+                            <button class="btn btn-primary" id="export-file">
+                                Datei exportieren
+                            </button>
+
+                            <span>|</span>
+
+                            <input class="form-control" type="file" id="import-file">
+
+
+                            <button class="btn btn-primary ms-2" data-action="import" id="import-file-button">
+                                Datei importieren
+                            </button>
+                        </div>
+
+
                         <label class="w-100 form-label">
                             <b>Text zum Kopieren und Einfügen:</b>
                             <textarea class="form-control mt-1" id="input-export-import" spellcheck="false"></textarea>

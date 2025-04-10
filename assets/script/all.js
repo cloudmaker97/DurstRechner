@@ -21,6 +21,18 @@ class Element {
         return document.querySelector('#input-export-import');
     }
 
+    static getFileExportButton() {
+        return document.querySelector('#export-file');
+    }
+
+    static getFileImportButton() {
+        return document.querySelector('#import-file-button');
+    }
+
+    static getFileImportFileInput() {
+        return document.querySelector('#import-file');
+    }
+
     /**
      * Get the product list element
      * @returns {HTMLElement}
@@ -704,3 +716,32 @@ const productManager = new ProductManager();
 const tabManager = new TabManager();
 const themeManager = new ThemeManager();
 const cartHistoryManager = new CartHistoryManager();
+
+
+Element.getFileExportButton().addEventListener('click', () => {
+    const blob = new Blob([Element.getImportExportTextarea().value], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'products.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+        a.remove();
+    }, 0);
+});
+
+Element.getFileImportButton().addEventListener('click', () => {
+    let inputJsonFile = Element.getFileImportFileInput();
+    let fileContent = inputJsonFile.files[0];
+    if (fileContent) {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const json = JSON.parse(e.target.result);
+            await productManager.convertAndSaveProductImages(json);
+            location.reload();
+        };
+        reader.readAsText(fileContent);
+    }
+})
