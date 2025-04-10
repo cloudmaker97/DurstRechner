@@ -52,6 +52,19 @@
         cursor: default;
     }
 }
+
+/**
+ * Make the cart sticky on screens wider than 768px
+ */
+@media screen and (min-width: 768px) {
+    .cart {
+        position: sticky;
+        top: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+}
+
 /**
  * Product list contains all available products,
  * which are displayed in a grid layout. The grid scaling is done by bootstrap.
