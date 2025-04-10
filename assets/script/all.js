@@ -269,7 +269,6 @@ class Product {
 
             // Remove the product element from the settings list if the product has been saved
             Element.getCreateNewProductButton().addEventListener('click', (e) => {
-                console.log(document.querySelector("[name=edit-product-id]"), this.id.toString());
                 if(document.querySelector("[name=edit-product-id]").value === this.id.toString()) {
                     productManager.removeProduct(this);
                     productElement.remove();
@@ -333,8 +332,8 @@ class Base64Image {
             img.crossOrigin = 'Anonymous';
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                canvas.width = 250;
-                canvas.height = 250;
+                canvas.width = 150;
+                canvas.height = 150;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 const dataUrl = canvas.toDataURL();
