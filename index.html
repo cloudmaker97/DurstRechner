@@ -110,6 +110,35 @@
                 <div class="card-body">
                     <details class="mb-2">
                         <summary>Exportieren und Importieren</summary>
+                        <div class="row">
+                            <div class="col-12 mb-2 mt-2">
+                                <p>
+                                    Hier kann die JSON-Datei exportiert werden. Dafür auf "Produkte herunterladen" klicken.
+                                    Die Datei wird dann im Download-Ordner gespeichert. Die Daten können nach eigenen
+                                    Belieben bearbeitet werden. Die Daten können auch wieder importiert werden.
+                                </p>
+                                <button class="btn btn-primary" id="export-file">
+                                    Produkte herunterladen
+                                </button>
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    Hier kann die JSON-Datei importiert werden. Dafür die Datei
+                                    auswählen und auf "Hochladen" klicken. Die Daten werden dann in die Software
+                                    importiert.
+                                </p>
+                                <div class="input-group">
+                                    <input class="form-control" type="file" id="import-file">
+                                    <button class="btn btn-primary ms-2" data-action="import" id="import-file-button">
+                                        Hochladen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="mb-2">
+                        <summary>Testdaten einspielen</summary>
                         <p>
                             Die Daten können im JSON-Format exportiert und importiert werden.
                             Um Speicherplatz zu sparen, sollte das Bild im Format 1:1 vorliegen.
@@ -117,24 +146,6 @@
                             lädt die Software das Bild herunter und speichert es in der JSON-Datei als Base64-kodierte
                             Version. Die ursprüngliche URL wird dabei nicht mehr gespeichert.
                         </p>
-
-
-                        <div class="">
-                            <button class="btn btn-primary" id="export-file">
-                                Datei exportieren
-                            </button>
-
-                            <span>|</span>
-
-                            <input class="form-control" type="file" id="import-file">
-
-
-                            <button class="btn btn-primary ms-2" data-action="import" id="import-file-button">
-                                Datei importieren
-                            </button>
-                        </div>
-
-
                         <label class="w-100 form-label">
                             <b>Text zum Kopieren und Einfügen:</b>
                             <textarea class="form-control mt-1" id="input-export-import" spellcheck="false"></textarea>

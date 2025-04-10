@@ -21,14 +21,26 @@ class Element {
         return document.querySelector('#input-export-import');
     }
 
+    /**
+     * Get the file export button element
+     * @returns {Element}
+     */
     static getFileExportButton() {
         return document.querySelector('#export-file');
     }
 
+    /**
+     * Get the file import button element
+     * @returns {Element}
+     */
     static getFileImportButton() {
         return document.querySelector('#import-file-button');
     }
 
+    /**
+     * Get the file import input element
+     * @returns {Element}
+     */
     static getFileImportFileInput() {
         return document.querySelector('#import-file');
     }
@@ -91,7 +103,7 @@ class Element {
 
     /**
      * Get the buttons for importing test data
-     * @returns {Element}
+     * @returns {Element[]}
      */
     static getButtonsImportTestdata() {
         return document.querySelectorAll('[data-action=import-testdata]');
@@ -358,6 +370,34 @@ class ProductManager {
                 console.error(e);
             }
         });
+
+        Element.getFileExportButton().addEventListener('click', () => {
+            const blob = new Blob([Element.getImportExportTextarea().value], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'products.json';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+                a.remove();
+            }, 0);
+        });
+
+        Element.getFileImportButton().addEventListener('click', () => {
+            let inputJsonFile = Element.getFileImportFileInput();
+            let fileContent = inputJsonFile.files[0];
+            if (fileContent) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const json = JSON.parse(e.target.result);
+                    await productManager.convertAndSaveProductImages(json);
+                    location.reload();
+                };
+                reader.readAsText(fileContent);
+            }
+        })
     }
 
     /**
@@ -694,14 +734,26 @@ class ThemeManager {
  * Define the CartHistoryManager class to manage the cart history.
  */
 class CartHistoryManager {
+    /**
+     * Get the cart history from local storage.
+     * @returns {string|number}
+     */
     static getTotal() {
         return localStorage.getItem('cart-total-value') || 0;
     }
 
+    /**
+     * Set the cart history value in local storage.
+     * @param value
+     */
     static setTotal(value) {
         localStorage.setItem('cart-total-value', value);
     }
 
+    /**
+     * Add to the cart history value in local storage.
+     * @param value
+     */
     static addToTotal(value) {
         const total = parseFloat(CartHistoryManager.getTotal()) + value;
         CartHistoryManager.setTotal(total);
@@ -716,39 +768,3 @@ const productManager = new ProductManager();
 const tabManager = new TabManager();
 const themeManager = new ThemeManager();
 const cartHistoryManager = new CartHistoryManager();
-
-
-Element.getFileExportButton().addEventListener('click', () => {
-    const blob = new Blob([Element.getImportExportTextarea().value], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'products.json';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-        a.remove();
-    }, 0);
-});
-
-Element.getFileImportButton().addEventListener('click', () => {
-    let inputJsonFile = Element.getFileImportFileInput();
-    let fileContent = inputJsonFile.files[0];
-    if (fileContent) {
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            const json = JSON.parse(e.target.result);
-            await productManager.convertAndSaveProductImages(json);
-            location.reload();
-        };
-        reader.readAsText(fileContent);
-    }
-})
-
-document.addEventListener('touchstart', function (e) {
-    if (window.scrollY === 0) {
-        e.preventDefault();
-    }
-});
-
